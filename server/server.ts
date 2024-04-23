@@ -11,11 +11,11 @@ app.use(express.json());
 
 import { JwtTokenHandler, TokenHandler } from './userControllers/tokenHandler';
 import { DatabaseUserAuthenticator, UserAuthenticator } from './userControllers/userAuthenticator';
-import { DatabaseUserHandler, UserController } from './userControllers/databaseUserHandler';
+import { DatabaseUserHandler, UserHandler } from './userControllers/databaseUserHandler';
 
 const tokenHandler: TokenHandler = new JwtTokenHandler(process.env.SECRET_KEY!);
 const userAuthenticator: UserAuthenticator = new DatabaseUserAuthenticator();
-const userHandler: UserController = new DatabaseUserHandler();
+const userHandler: UserHandler = new DatabaseUserHandler();
 
 app.post('/createUser', async (req, res) => {
   const { username, password } = req.body;

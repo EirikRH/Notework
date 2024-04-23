@@ -1,13 +1,12 @@
-import { users } from "@prisma/client";
-import { createNewUser, changePassword } from "../database-utils/userCRUD";
+import { users } from '@prisma/client';
+import { createNewUser, changePassword } from '../database-utils/userCRUD';
 
-export interface UserController {
+export interface UserHandler {
   createUser(username: string, password: string): Promise<users>;
   setNewPassword(userID: number, newPassword: string): Promise<void>;
 }
 
-export class DatabaseUserHandler implements UserController {
-
+export class DatabaseUserHandler implements UserHandler {
   public async createUser(username: string, password: string): Promise<users> {
     try {
       return await createNewUser(username, password);
