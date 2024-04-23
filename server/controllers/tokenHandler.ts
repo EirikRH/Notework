@@ -1,21 +1,21 @@
 const jwt = require('jsonwebtoken');
 
 export interface TokenHandler {
-  createToken(tokenData): string;
+  createToken(tokenData: TokenData): string;
   decodeToken(token: string): TokenData;
 }
 
 interface TokenData {
   username: string;
-  userID: number
+  userID: number;
 }
 
-export class jwtTokenHandler implements TokenHandler {
+export class JwtTokenHandler implements TokenHandler {
   private encoderKey: string;
-  constructor (encoder:string){
+  constructor(encoder: string) {
     this.encoderKey = encoder;
   }
-  public createToken(tokenData:{username: string, userID: number}): string {
+  public createToken(tokenData: TokenData): string {
     return jwt.sign(tokenData, this.encoderKey);
   }
 
