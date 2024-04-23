@@ -12,10 +12,12 @@ app.use(express.json());
 import { JwtTokenHandler, TokenHandler } from './userControllers/tokenHandler';
 import { DatabaseUserAuthenticator, UserAuthenticator } from './userControllers/userAuthenticator';
 import { DatabaseUserHandler, UserHandler } from './userControllers/databaseUserHandler';
+import { DatabaseNoteHandler, NoteHandler } from './noteControllers/databaseNoteHandler';
 
 const tokenHandler: TokenHandler = new JwtTokenHandler(process.env.SECRET_KEY!);
 const userAuthenticator: UserAuthenticator = new DatabaseUserAuthenticator();
 const userHandler: UserHandler = new DatabaseUserHandler();
+const noteHandler: NoteHandler = new DatabaseNoteHandler();
 
 app.post('/createUser', async (req, res) => {
   const { username, password } = req.body;
@@ -40,16 +42,36 @@ app.post('/login', async (req, res) => {
 
 app.post('/SaveNewNote', async (req, res) => {
   const { title, content } = req.body;
-  const loginToken = req.body.loginToken;
+  const { userID } = tokenHandler.decodeToken(req.body.loginToken);
+
+  const newNote = { title, content, userID };
+
+  try {
+    await noteHandler.createNote(newNote);
+    res.status(201).send('Note created successfully');
+  } catch (error) {
+    res.status(400).send('Note creation failed');
+  }
 });
 
 app.get('/userNotes', async (req, res) => {
-  const loginToken = req.body.loginToken;
+  const { userID } = tokenHandler.decodeToken(req.body.loginToken);
+  try {
+    const notes = await noteHandler.getUserNotes(userID);
+    res.status(200).json(notes);
+  } catch (error) {
+    res.status(400).send('Failed to get notes');
+  }
 });
 
 app.put('/updateNote', async (req, res) => {
   const { noteID, newTitle, newContent } = req.body;
-  const loginToken = req.body.loginToken;
+  try {
+    await noteHandler.updateNote(noteID, newTitle, newContent);
+    res.status(200).send('Note updated successfully');
+  } catch (error) {
+    res.status(400).send('Failed to update note');
+  }
 });
 
 app.listen({ port }, () => {

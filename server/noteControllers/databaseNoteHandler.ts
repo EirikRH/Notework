@@ -1,4 +1,4 @@
-import { createNewNote, updateNote, getNotesByUserID, deleteNote } from '../database-utils/noteCRUD';
+import { createNewNote, updateExistingNote, getNotesByUserID, deleteNote } from '../database-utils/noteCRUD';
 
 export interface NoteHandler {
   createNote: (newNote: NewNote) => Promise<void>;
@@ -28,7 +28,7 @@ export class DatabaseNoteHandler implements NoteHandler {
   }
   public async updateNote(noteID: number, newTitle: string, newContent: string) {
     try {
-      await updateNote(noteID, newTitle, newContent);
+      await updateExistingNote(noteID, newTitle, newContent);
     } catch (error) {
       throw error;
     }

@@ -32,7 +32,7 @@ export async function createNewNote(title: string, content: string, userID: numb
   }
 }
 
-export async function updateNote(noteID: number, newTitle: string, newContent: string) {
+export async function updateExistingNote(noteID: number, newTitle: string, newContent: string) {
   try {
     await databaseClient.notes.update({
       where: {
