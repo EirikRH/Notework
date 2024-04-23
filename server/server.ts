@@ -38,7 +38,7 @@ app.post('/login', async (req, res) => {
   } catch (error) {}
 });
 
-app.post('/newNote', async (req, res) => {
+app.post('/SaveNewNote', async (req, res) => {
   const { title, content } = req.body;
   const loginToken = req.body.loginToken;
 });
