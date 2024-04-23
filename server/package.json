@@ -1,0 +1,21 @@
+{
+  "name": "database-api",
+  "version": "1.0.0",
+  "description": "database-api",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "tsc": "tsc --watch server.ts"
+  },
+  "author": "Eirik RH",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "prisma": "^5.12.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.12.1"
+  }
+}
