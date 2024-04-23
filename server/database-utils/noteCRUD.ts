@@ -49,3 +49,16 @@ export async function updateNote(noteID: number, newTitle: string, newContent: s
     await databaseClient.$disconnect();
   }
 }
+export async function deleteNote(noteID: number) {
+  try {
+    await databaseClient.notes.delete({
+      where: {
+        note_ID: noteID,
+      },
+    });
+  } catch (error) {
+    throw error;
+  } finally {
+    await databaseClient.$disconnect();
+  }
+}
