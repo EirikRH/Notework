@@ -32,7 +32,7 @@ export async function createNewNote(title: string, content: string, userID: numb
   }
 }
 
-export async function updateNoteTitle(noteID: number, newTitle: string) {
+export async function updateNote(noteID: number, newTitle: string, newContent: string) {
   try {
     await databaseClient.notes.update({
       where: {
@@ -40,22 +40,6 @@ export async function updateNoteTitle(noteID: number, newTitle: string) {
       },
       data: {
         title: newTitle,
-      },
-    });
-  } catch (error) {
-    throw error;
-  } finally {
-    await databaseClient.$disconnect();
-  }
-}
-
-export async function updateNoteContent(noteID: number, newContent: string) {
-  try {
-    await databaseClient.notes.update({
-      where: {
-        note_ID: noteID,
-      },
-      data: {
         content: newContent,
       },
     });
