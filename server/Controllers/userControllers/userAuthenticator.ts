@@ -1,4 +1,4 @@
-import { getUserByCredentials, getUserByID } from '../database-utils/userCRUD';
+import { getUserByCredentials, getUserByID } from '../../database-utils/userCRUD';
 
 export interface UserAuthenticator {
   authenticateLoginAttempt(username: string, password: string): Promise<ValidatedUser>;
@@ -21,7 +21,7 @@ export class DatabaseUserAuthenticator implements UserAuthenticator {
   }
   public async authenticateUserFromTokenID(tokenID: number): Promise<ValidatedUser> {
     try {
-      const user =  await getUserByID(tokenID);
+      const user = await getUserByID(tokenID);
       return { username: user.username, userID: user.ID };
     } catch (error) {
       throw error;

@@ -1,5 +1,5 @@
 import { users } from '@prisma/client';
-import { createNewUser, changePassword } from '../database-utils/userCRUD';
+import { createNewUser, changePassword } from '../../database-utils/userCRUD';
 
 export interface UserHandler {
   createUser(username: string, password: string): Promise<users>;

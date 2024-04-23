@@ -9,10 +9,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-import { JwtTokenHandler, TokenHandler } from './userControllers/tokenHandler';
-import { DatabaseUserAuthenticator, UserAuthenticator } from './userControllers/userAuthenticator';
-import { DatabaseUserHandler, UserHandler } from './userControllers/databaseUserHandler';
-import { DatabaseNoteHandler, NoteHandler } from './noteControllers/databaseNoteHandler';
+import { JwtTokenHandler, TokenHandler } from './Controllers/userControllers/tokenHandler';
+import { DatabaseUserAuthenticator, UserAuthenticator } from './Controllers/userControllers/userAuthenticator';
+import { DatabaseUserHandler, UserHandler } from './Controllers/userControllers/databaseUserHandler';
+import { DatabaseNoteHandler, NoteHandler } from './Controllers/noteControllers/databaseNoteHandler';
 
 const tokenHandler: TokenHandler = new JwtTokenHandler(process.env.SECRET_KEY!);
 const userAuthenticator: UserAuthenticator = new DatabaseUserAuthenticator();
@@ -79,11 +79,8 @@ app.delete('/deleteNote', async (req, res) => {
   try {
     await noteHandler.deleteNote(noteID);
     res.status(200).send('Note deleted successfully');
-    
-  } catch (error) {
-    
-  }
-})
+  } catch (error) {}
+});
 
 app.listen({ port }, () => {
   console.log(`Server is running at http://localhost:${port}`);

@@ -1,4 +1,4 @@
-import { createNewNote, updateExistingNote, getNotesByUserID, deleteNote } from '../database-utils/noteCRUD';
+import { createNewNote, updateExistingNote, getNotesByUserID, deleteNote } from '../../database-utils/noteCRUD';
 
 export interface NoteHandler {
   createNote: (newNote: NewNote) => Promise<void>;
