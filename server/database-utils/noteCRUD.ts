@@ -6,6 +6,9 @@ export async function getNotesByUserID(userID: number) {
       where: {
         user_ID: userID,
       },
+      orderBy: {
+        note_ID: 'desc',
+      },
     });
     return notes;
   } catch (error) {
