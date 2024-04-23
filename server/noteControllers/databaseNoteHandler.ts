@@ -2,8 +2,9 @@ import { createNewNote, updateExistingNote, getNotesByUserID, deleteNote } from 
 
 export interface NoteHandler {
   createNote: (newNote: NewNote) => Promise<void>;
-  updateNote: (noteID: number, newTitle: string, newContent: string) => Promise<void>;
   getUserNotes: (userID: number) => Promise<ExistingNote[] | null>;
+  updateNote: (noteID: number, newTitle: string, newContent: string) => Promise<void>;
+  deleteNote: (noteID: number) => Promise<void>;
 }
 
 interface NewNote {
@@ -26,17 +27,18 @@ export class DatabaseNoteHandler implements NoteHandler {
       throw error;
     }
   }
-  public async updateNote(noteID: number, newTitle: string, newContent: string) {
+
+  public async getUserNotes(userID: number): Promise<ExistingNote[] | null> {
     try {
-      await updateExistingNote(noteID, newTitle, newContent);
+      return await getNotesByUserID(userID);
     } catch (error) {
       throw error;
     }
   }
 
-  public async getUserNotes(userID: number): Promise<ExistingNote[] | null> {
+  public async updateNote(noteID: number, newTitle: string, newContent: string) {
     try {
-      return await getNotesByUserID(userID);
+      await updateExistingNote(noteID, newTitle, newContent);
     } catch (error) {
       throw error;
     }

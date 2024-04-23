@@ -74,6 +74,17 @@ app.put('/updateNote', async (req, res) => {
   }
 });
 
+app.delete('/deleteNote', async (req, res) => {
+  const { noteID } = req.body;
+  try {
+    await noteHandler.deleteNote(noteID);
+    res.status(200).send('Note deleted successfully');
+    
+  } catch (error) {
+    
+  }
+})
+
 app.listen({ port }, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
