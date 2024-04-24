@@ -13,9 +13,9 @@ const NoteList: FunctionComponent<NoteListProps> = ({ loginToken }: NoteListProp
   const [loadedNotes, setloadedNotes] = useState<Note[]>([]);
 
   async function getUserNotes(loginToken: string): Promise<Note[]> {
-    const databaseNotes = await sendNoteRequest(loginToken);
+    const storedNotes = await sendNoteRequest(loginToken);
 
-    return databaseNotes;
+    return storedNotes;
   }
 
   useEffect(() => {

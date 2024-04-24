@@ -30,6 +30,7 @@ function App() {
       setLoginToken(token);
     }
   }
+
   useEffect(() => {
     loginCheck();
   }, [loginToken]);
