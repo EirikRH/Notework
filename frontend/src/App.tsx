@@ -12,6 +12,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginToken, setLoginToken] = useState('');
   const [notes, setNotes] = useState<Note[]>([]);
+  const [indexOfNoteToEdit, setIndexOfNoteToEdit] = useState(-1);
 
   const token = localStorage.getItem('loginToken');
 
@@ -39,7 +40,12 @@ function App() {
   async function getUserNotes(loginToken: string): Promise<Note[]> {
     const storedNotes = await sendNoteRequest(loginToken);
 
-    return storedNotes;
+    const indexedNotes = storedNotes.map((note: Note, index: number) => {
+      return { index, ...note };
+    });
+    console.log(indexedNotes);
+
+    return indexedNotes;
   }
 
   useEffect(() => {
@@ -53,7 +59,15 @@ function App() {
     fetchNotes();
   }, [loggedIn]);
 
-  const landingPage = !loggedIn ? <Login attemptLogin={attemptLogin} /> : <NoteList notes={notes} />;
+  function editRequest(note: Note) {
+    setIndexOfNoteToEdit(note.index!);
+  }
+
+  const landingPage = !loggedIn ? (
+    <Login attemptLogin={attemptLogin} />
+  ) : (
+    <NoteList editRequest={editRequest} notes={notes} />
+  );
 
   return (
     <>

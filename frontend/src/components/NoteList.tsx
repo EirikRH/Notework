@@ -1,21 +1,20 @@
 import { FunctionComponent } from 'react';
+import NoteBanner from './NoteBanner';
 
 export interface Note {
   note_ID: number;
   title: string;
   content: string;
+  index?: number;
 }
 interface NoteListProps {
   notes: Note[];
+  editRequest: (note: Note) => void;
 }
 
-const NoteList: FunctionComponent<NoteListProps> = ({ notes }: NoteListProps) => {
+const NoteList: FunctionComponent<NoteListProps> = ({ notes, editRequest }: NoteListProps) => {
   const noteBanners = notes.map((note: Note) => {
-    return (
-      <li key={note.note_ID}>
-        <h4>{note.title}</h4>
-      </li>
-    );
+    return <NoteBanner editRequest={editRequest} note={note} />;
   });
 
   return (
