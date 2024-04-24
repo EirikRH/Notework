@@ -2,12 +2,19 @@ import { Note } from '../components/NoteList';
 
 const API_URL = '/api';
 
-export interface LoginAttempt {
+export interface Credentials {
   username: string;
   password: string;
 }
 
-export async function sendLoginRequest({ username, password }: LoginAttempt) {
+export interface LoginResponse {
+  status: number;
+  data: {
+    loginToken?: string;
+    error?: string;
+  };
+}
+export async function sendLoginRequest({ username, password }: Credentials): Promise<LoginResponse> {
   try {
     const response = await fetch(`${API_URL}/login`, {
       method: 'POST',
@@ -41,6 +48,23 @@ export async function sendNoteRequest(loginToken: string): Promise<Note[]> {
       throw new Error('Failed to fetch notes');
     }
     return await response.json();
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function sendUserCreationRequest(newUser: Credentials) {
+  const { username, password } = newUser;
+  try {
+    const response = await fetch(`${API_URL}/createUser`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    return response.status;
   } catch (error) {
     throw error;
   }

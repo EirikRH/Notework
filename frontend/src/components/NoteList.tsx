@@ -29,7 +29,7 @@ const NoteList: FunctionComponent<NoteListProps> = ({ loginToken }: NoteListProp
   const noteBanners = loadedNotes.map((note: Note) => {
     return (
       <li key={note.note_ID}>
-        <h2>{note.title}</h2>
+        <h3>{note.title}</h3>
       </li>
     );
   });
