@@ -16,6 +16,7 @@ const Login: FunctionComponent<LoginProps> = ({ attemptLogin }) => {
     setLoginErrorMesage('');
 
     const loginAttempt = await attemptLogin({ username, password });
+
     if (loginAttempt.status !== 200) {
       setLoginErrorMesage(`${loginAttempt.status}, ${loginAttempt.data.error}`);
     }

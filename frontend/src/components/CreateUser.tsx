@@ -27,7 +27,6 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({ attemptLogin }) => {
     }
 
     const creationStatus = await sendUserCreationRequest({ username, password });
-    console.log(creationStatus);
 
     if (creationStatus === 201) {
       return await attemptLogin({ username, password });

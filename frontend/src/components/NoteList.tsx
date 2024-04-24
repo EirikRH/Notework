@@ -1,35 +1,19 @@
-import { FunctionComponent, useEffect, useState } from 'react';
-import { sendNoteRequest } from '../assets/server-requests';
+import { FunctionComponent } from 'react';
+
 export interface Note {
   note_ID: number;
   title: string;
   content: string;
 }
 interface NoteListProps {
-  loginToken: string;
+  notes: Note[];
 }
 
-const NoteList: FunctionComponent<NoteListProps> = ({ loginToken }: NoteListProps) => {
-  const [loadedNotes, setloadedNotes] = useState<Note[]>([]);
-
-  async function getUserNotes(loginToken: string): Promise<Note[]> {
-    const storedNotes = await sendNoteRequest(loginToken);
-
-    return storedNotes;
-  }
-
-  useEffect(() => {
-    const fetchNotes = async () => {
-      const userNotes = await getUserNotes(loginToken);
-      setloadedNotes(userNotes);
-    };
-    fetchNotes();
-  }, [loginToken]);
-
-  const noteBanners = loadedNotes.map((note: Note) => {
+const NoteList: FunctionComponent<NoteListProps> = ({ notes }: NoteListProps) => {
+  const noteBanners = notes.map((note: Note) => {
     return (
       <li key={note.note_ID}>
-        <h3>{note.title}</h3>
+        <h4>{note.title}</h4>
       </li>
     );
   });
