@@ -37,7 +37,13 @@ app.post('/login', async (req, res) => {
     const loginToken = tokenHandler.createToken(login);
 
     res.status(200).json({ loginToken });
-  } catch (error) {}
+  } catch (error: any) {
+    if (error.code == 'P2025') {
+      res.status(401).send({ error: 'Invalid username or password' });
+    } else {
+      res.status(500).send({ error: 'internal server error' });
+    }
+  }
 });
 
 app.post('/SaveNewNote', async (req, res) => {
