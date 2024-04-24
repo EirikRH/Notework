@@ -46,7 +46,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.post('/SaveNewNote', async (req, res) => {
+app.post('/saveNewNote', async (req, res) => {
   const { title, content } = req.body;
   const { userID } = tokenHandler.decodeToken(req.body.loginToken);
 
@@ -60,7 +60,7 @@ app.post('/SaveNewNote', async (req, res) => {
   }
 });
 
-app.get('/userNotes', async (req, res) => {
+app.post('/userNotes', async (req, res) => {
   const { userID } = tokenHandler.decodeToken(req.body.loginToken);
   try {
     const notes = await noteHandler.getUserNotes(userID);

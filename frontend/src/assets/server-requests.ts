@@ -1,3 +1,5 @@
+import { Note } from '../components/NoteList';
+
 const API_URL = '/api';
 
 export interface LoginAttempt {
@@ -23,19 +25,22 @@ export async function sendLoginRequest({ username, password }: LoginAttempt) {
   }
 }
 
-export async function sendNoteRequest(loginToken: string) {
+export async function sendNoteRequest(loginToken: string): Promise<Note[]> {
   try {
     const response = await fetch(`${API_URL}/userNotes`, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ loginToken }),
     });
 
-    const data = await response.json();
+    const status = response.status;
 
-    return { status: response.status, data };
+    if (status !== 200) {
+      throw new Error('Failed to fetch notes');
+    }
+    return await response.json();
   } catch (error) {
     throw error;
   }
