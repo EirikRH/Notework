@@ -22,10 +22,9 @@ const NoteList: FunctionComponent<NoteListProps> = ({ notes, setNoteToEdit, hand
   });
 
   return (
-    <>
-      <h5 className="noteMenuTitle">My notes</h5>
+    <div className="noteMenu">
       <ul className="noteList">{noteBanners}</ul>
-    </>
+    </div>
   );
 };
 

@@ -27,8 +27,10 @@ const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note, setNoteToEdit, h
       className="noteBanner"
       key={note.index}
     >
-      <p className='noteBannerTitle'>{note.title}</p>
-      <p className='noteBannerPreview'>{note.content}</p>
+      <div className='previewHolder'>
+        <p className="noteBannerTitle">{note.title}</p>
+        <p className="noteBannerPreview">{note.content}</p>
+      </div>
       <button
         type="button"
         className={certain ? 'badButton' : 'neutralButton'}

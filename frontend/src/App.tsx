@@ -113,6 +113,7 @@ function App() {
     setLoadedNotes(updatedLoadedNotes);
     setIsCurrentNoteNew(false);
     setSelectedNote(savedNote);
+    setSaveMessage('Saved');
   };
 
   const handleNoteUpdate = async (updatedNote: Note, exitNote: boolean) => {
@@ -159,7 +160,7 @@ function App() {
   ) : (
     <>
       <NoteList setNoteToEdit={handleNoteSelection} handleNoteDelete={handleNoteDelete} notes={loadedNotes} />
-      {saveMessage && <p>{saveMessage}</p>}
+      {saveMessage && <p className="saveMessage">{saveMessage}</p>}
       <NoteEditor
         isCurrentNoteNew={iscurrentNoteNew}
         selectedNote={selectedNote}

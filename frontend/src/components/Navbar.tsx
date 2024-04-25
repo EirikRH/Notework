@@ -18,7 +18,11 @@ const Navbar: FunctionComponent<NavbarProps> = ({ loginCheck, loggedIn }) => {
       </button>
     </a>
   );
-  return <nav>Notework {logoutButton}</nav>;
+  return (
+    <nav>
+      <p>Notework</p> {logoutButton}
+    </nav>
+  );
 };
 
 export default Navbar;

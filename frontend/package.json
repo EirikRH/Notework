@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "sass": "sass --watch ./app.scss ./App.css"
+    "sass": "sass --watch App.scss App.css"
   },
   "dependencies": {
     "@types/node": "^20.12.7",

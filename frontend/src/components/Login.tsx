@@ -23,29 +23,28 @@ const Login: FunctionComponent<LoginProps> = ({ attemptLogin }) => {
   }
 
   return (
-    <>
-      <form name="loginForm">
+    <div className='loginContainer'>
+      
         <input
           type="text"
           name="username"
-          placeholder="username.."
+          placeholder="Username..."
           onChange={(event) => setUsername(event.target.value)}
         />
         <input
           type="password"
           name="password"
-          placeholder="password.."
+          placeholder="Password..."
           onChange={(event) => setPassword(event.target.value)}
         />
         <button type="submit" onClick={(event) => handleLoginClick(event)}>
           Login
         </button>
-      </form>
       {loginErrorMessage && <h3>{loginErrorMessage}</h3>}
       <a href="/createUser">
         <button>New User</button>
       </a>
-    </>
+    </div>
   );
 };
 

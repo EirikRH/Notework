@@ -18,7 +18,11 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = ({
   handleNoteUpdate,
   handleNoteDeselection,
 }) => {
-  const NewNoteButton = <button onClick={() => handleNewNoteClick()}>+</button>;
+  const NewNoteButton = (
+    <button id="NewNoteButton" onClick={() => handleNewNoteClick()}>
+      +
+    </button>
+  );
   if (!selectedNote) {
     return NewNoteButton;
   }
@@ -55,35 +59,42 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = ({
   const currentNote = { ...selectedNote, title: currentTitle, content: currentContent };
 
   return (
-    <form>
+    <form className="editNote">
       <input
-        className={'note-title-area'}
+        className="editTitleArea"
+        placeholder="Title.."
         type="text"
         onChange={(event) => handleTitleChange(event)}
         value={currentTitle}
       />
-      <textarea className="note-text-area" onChange={(event) => handleContentChange(event)} value={currentContent} />
-
-      <button
-        type="button"
-        className="goodButton"
-        disabled={!changed}
-        onClick={() => {
-          changed && handleSaveClick(false);
-          setChanged(false);
-        }}
-      >
-        Save
-      </button>
-      <button
-        type="button"
-        className="neutralButton"
-        onClick={() => {
-          !changed ? handleNoteDeselection() : handleSaveClick(true);
-        }}
-      >
-        X
-      </button>
+      <textarea
+        placeholder="Here you can type anything..."
+        className="editTextArea"
+        onChange={(event) => handleContentChange(event)}
+        value={currentContent}
+      />
+      <div className='editButtonHolder'>
+        <button
+          type="button"
+          className="saveButton"
+          disabled={!changed}
+          onClick={() => {
+            changed && handleSaveClick(false);
+            setChanged(false);
+          }}
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          className="exitButton"
+          onClick={() => {
+            !changed ? handleNoteDeselection() : handleSaveClick(true);
+          }}
+        >
+          Exit
+        </button>
+      </div>
     </form>
   );
 };

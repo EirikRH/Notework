@@ -36,19 +36,25 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({ attemptLogin }) => {
 
   return (
     <>
-      <form name="NewUserForm">
+      <div className="newUserContainer">
         <input
           placeholder="Set Username"
           type="text"
           name="username"
-          onChange={(event) => setUsername(event.target.value.split(' ').join(''))}
+          onChange={(event) => {
+            setUsername(event.target.value.split(' ').join(''));
+            setCreationError('');
+          }}
           value={username}
         />
         <input
           placeholder="Set Password"
           type="password"
           name="password1"
-          onChange={(event) => setPassword(event.target.value)}
+          onChange={(event) => {
+            setPassword(event.target.value);
+            setCreationError('');
+          }}
         />
         <input
           placeholder="Repeat Password"
@@ -57,11 +63,14 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({ attemptLogin }) => {
           onChange={(event) => setValidatorPassword(event.target.value)}
         />
         {!passwordMatch && <p>Passwords do not match</p>}
-        {creationError && <p>{creationError}</p>}
+        {creationError && <p className="creationError">{creationError}</p>}
         <button disabled={!passwordMatch || (username.length < 1 && true)} onClick={handleRegistrationClick}>
           Register User
         </button>
-      </form>
+        <button onClick={()=>{
+          window.location.href = '/'
+        }}>Already have an account?</button>
+      </div>
     </>
   );
 };
