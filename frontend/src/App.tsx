@@ -6,6 +6,8 @@ import Login from './components/Login';
 import NoteList, { Note } from './components/NoteList';
 import Navbar from './components/Navbar';
 import CreateUser from './components/CreateUser';
+import NoteEditor from './components/NoteEditor';
+
 import {
   sendLoginRequest,
   sendNotesRequest,
@@ -13,20 +15,14 @@ import {
   LoginResponse,
   sendNoteUpdateRequest,
   sendNoteCreationRequest,
+  sendNoteDeletionRequest,
 } from './assets/server-requests';
-import NoteEditor from './components/NoteEditor';
-
-export interface NewNote {
-  index: number;
-  title: string;
-  content: string;
-}
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginToken, setLoginToken] = useState('');
   const [loadedNotes, setLoadedNotes] = useState<Note[]>([]);
-  const [selectedNote, setSelectedNote] = useState<Note | NewNote | undefined>(undefined);
+  const [selectedNote, setSelectedNote] = useState<Note | undefined>(undefined);
   const [isUserEditing, setIsUserEditing] = useState<boolean>(false);
   const [iscurrentNoteNew, setIsCurrentNoteNew] = useState<boolean>(false);
 
@@ -93,15 +89,14 @@ function App() {
 
   const handleNewNoteClick = () => {
     setIsCurrentNoteNew(true);
+    if (!isUserEditing) {
+      setIsUserEditing(true);
+    }
     setSelectedNote({
       index: loadedNotes.length,
       title: '',
       content: '',
     });
-
-    if (!isUserEditing) {
-      setIsUserEditing(true);
-    }
   };
 
   const handleSaveNewNote = async (newNote: Note) => {
@@ -139,6 +134,19 @@ function App() {
 
     setSaveMessage('Saved');
   };
+  const handleNoteDelete = async (note: Note) => {
+    if (selectedNote?.index === note.index) {
+      setSelectedNote(undefined);
+    }
+    const deleteRequestStatus = await sendNoteDeletionRequest(note, loginToken);
+
+    if (deleteRequestStatus !== 200) {
+      return setSaveMessage('Failed to delete note');
+    }
+    const updatedLoadedNotes = loadedNotes.filter((loadedNote) => loadedNote.index !== note.index);
+
+    setLoadedNotes(updatedLoadedNotes);
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -150,7 +158,7 @@ function App() {
     <Login attemptLogin={attemptLogin} />
   ) : (
     <>
-      <NoteList setNoteToEdit={handleNoteSelection} notes={loadedNotes} />
+      <NoteList setNoteToEdit={handleNoteSelection} handleNoteDelete={handleNoteDelete} notes={loadedNotes} />
       {saveMessage && <p>{saveMessage}</p>}
       <NoteEditor
         isCurrentNoteNew={iscurrentNoteNew}
