@@ -2,8 +2,8 @@ import { FunctionComponent } from 'react';
 import NoteBanner from './NoteBanner';
 
 export interface Note {
-  user_ID: number;
-  note_ID: number;
+  user_ID?: number;
+  note_ID?: number;
   title: string;
   content: string;
   index?: number;
