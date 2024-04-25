@@ -12,15 +12,24 @@ import {
   Credentials,
   LoginResponse,
   sendNoteUpdateRequest,
+  sendNoteCreationRequest,
 } from './assets/server-requests';
 import NoteEditor from './components/NoteEditor';
+
+export interface NewNote {
+  index: number;
+  title: string;
+  content: string;
+}
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginToken, setLoginToken] = useState('');
   const [loadedNotes, setLoadedNotes] = useState<Note[]>([]);
-  const [selectedNote, setSelectedNote] = useState<Note | undefined>(undefined);
+  const [selectedNote, setSelectedNote] = useState<Note | NewNote | undefined>(undefined);
   const [isUserEditing, setIsUserEditing] = useState<boolean>(false);
+  const [iscurrentNoteNew, setIsCurrentNoteNew] = useState<boolean>(false);
+
   const [saveMessage, setSaveMessage] = useState<string>('');
 
   const token = localStorage.getItem('loginToken');
@@ -77,9 +86,40 @@ function App() {
   const handleSavedNoteDeselection = () => {
     setSelectedNote(undefined);
     setIsUserEditing(false);
+  };
+
+  const handleNewNoteClick = () => {
+    setIsCurrentNoteNew(true);
+    setSelectedNote({
+      index: loadedNotes.length,
+      title: '',
+      content: '',
+    });
+
+    if (!isUserEditing) {
+      setIsUserEditing(true);
+    }
+    console.log('new note clicked');
+  };
+  const handleSaveNewNote = async (newNote: Note) => {
+
+    const saveNoteResponse = await sendNoteCreationRequest(newNote, loginToken);    
+
+    if (saveNoteResponse.status !== 201) {
+      return setSaveMessage('Failed to save new note');
+    }
+    const savedNote = await saveNoteResponse.json()
+    savedNote.index = loadedNotes.length;
+    
+    const updatedLoadedNotes = loadedNotes.concat(savedNote);
+
+    setLoadedNotes(updatedLoadedNotes);
+    setIsCurrentNoteNew(false);  
+    setSelectedNote(savedNote)
+
   }
 
-  const handleNoteSave = async (updatedNote: Note, exitNote: boolean) => {
+  const handleNoteUpdate = async (updatedNote: Note, exitNote: boolean) => {
     const saveRequestStatus = await sendNoteUpdateRequest(updatedNote, loginToken);
 
     if (saveRequestStatus !== 200) {
@@ -111,7 +151,14 @@ function App() {
     <>
       <NoteList setNoteToEdit={handleNoteSelection} notes={loadedNotes} />
       {saveMessage && <p>{saveMessage}</p>}
-      <NoteEditor handleNoteSave={handleNoteSave} handleNoteDeselection={handleSavedNoteDeselection} selectedNote={selectedNote} />
+      <NoteEditor
+        isCurrentNoteNew={iscurrentNoteNew}
+        selectedNote={selectedNote}
+        handleNewNoteClick={handleNewNoteClick}
+        handleSaveNewNote={handleSaveNewNote}
+        handleNoteUpdate={handleNoteUpdate}
+        handleNoteDeselection={handleSavedNoteDeselection}
+      />
     </>
   );
 

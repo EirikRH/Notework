@@ -2,14 +2,24 @@ import { FunctionComponent, useState, useEffect } from 'react';
 import { Note } from './NoteList';
 
 interface NoteEditorProps {
-  selectedNote?: Note;
-  handleNoteSave: (note: Note, exitNote: boolean) => void;
+  isCurrentNoteNew: boolean;
+  selectedNote?: Note | undefined;
+  handleNewNoteClick: () => void;
+  handleSaveNewNote: (note: Note) => void;
+  handleNoteUpdate: (note: Note, exitNote: boolean) => void;
   handleNoteDeselection: () => void;
 }
 
-const NoteEditor: FunctionComponent<NoteEditorProps> = ({ selectedNote, handleNoteSave, handleNoteDeselection }) => {
+const NoteEditor: FunctionComponent<NoteEditorProps> = ({
+  selectedNote,
+  isCurrentNoteNew,
+  handleNewNoteClick,
+  handleSaveNewNote,
+  handleNoteUpdate,
+  handleNoteDeselection,
+}) => {
   if (!selectedNote) {
-    return <button>+</button>;
+    return <button onClick={() => handleNewNoteClick()}>+</button>;
   }
   const [currentTitle, setCurrentTitle] = useState(selectedNote.title);
   const [currentContent, setCurrentContent] = useState(selectedNote.content);
@@ -22,6 +32,15 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = ({ selectedNote, handleNo
   function handleContentChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setCurrentContent(event.target.value);
     setChanged(true);
+  }
+
+  function handleSaveClick( exitNote: boolean){
+    if(!isCurrentNoteNew){
+      return handleNoteUpdate(currentNote, exitNote);
+    }
+    handleSaveNewNote(currentNote)
+    return setChanged(false);
+
   }
 
   useEffect(() => {
@@ -41,8 +60,10 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = ({ selectedNote, handleNo
 
       <button
         type="button"
+        disabled={!changed}
         onClick={() => {
-          changed && handleNoteSave(currentNote, false);
+          changed && handleSaveClick(false);
+          setChanged(false);
         }}
       >
         Save
@@ -50,7 +71,7 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = ({ selectedNote, handleNo
       <button
         type="button"
         onClick={() => {
-          !changed ? handleNoteDeselection() : handleNoteSave(currentNote, true);
+          !changed ? handleNoteDeselection() : handleSaveClick(true);
         }}
       >
         X

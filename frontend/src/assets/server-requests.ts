@@ -14,6 +14,12 @@ export interface LoginResponse {
     error?: string;
   };
 }
+export interface NewNoteResponse {
+  status: number;
+  data: {
+    note: Note;
+  };
+}
 export async function sendLoginRequest({ username, password }: Credentials): Promise<LoginResponse> {
   try {
     const response = await fetch(`${API_URL}/login`, {
@@ -89,6 +95,23 @@ export async function sendNoteUpdateRequest(note: Note, loginToken: string) {
     });
 
     return response.status;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function sendNoteCreationRequest(newNote: Note, loginToken: string): Promise<Response> {
+  const { title, content } = newNote;
+  try {
+    const response = await fetch(`${API_URL}/saveNewNote`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title, content, loginToken }),
+    });
+
+    return response;
   } catch (error) {
     throw error;
   }
