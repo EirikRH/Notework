@@ -89,11 +89,14 @@ app.put('/updateNote', async (req, res) => {
 });
 
 app.delete('/deleteNote', async (req, res) => {
-  const { noteID } = req.body;
+  const { noteID, loginToken } = req.body;
+  const { userID } = tokenHandler.decodeToken(loginToken);
   try {
-    await noteHandler.deleteNote(noteID);
-    res.status(200).send('Note deleted successfully');
-  } catch (error) {}
+    await noteHandler.deleteNote(noteID, userID);
+    res.status(200)
+  } catch (error) {
+    res.status(400)
+  }
 });
 
 app.listen({ port }, () => {

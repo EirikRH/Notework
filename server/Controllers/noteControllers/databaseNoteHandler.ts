@@ -4,7 +4,7 @@ export interface NoteHandler {
   createNote: (newNote: NewNote) => Promise<ExistingNote>;
   getUserNotes: (userID: number) => Promise<ExistingNote[] | null>;
   updateNote: (noteID: number, newTitle: string, newContent: string) => Promise<void>;
-  deleteNote: (noteID: number) => Promise<void>;
+  deleteNote: (noteID: number, userID: number) => Promise<void>;
 }
 
 interface NewNote {
@@ -44,9 +44,9 @@ export class DatabaseNoteHandler implements NoteHandler {
     }
   }
 
-  public async deleteNote(noteID: number) {
+  public async deleteNote(noteID: number, userID: number) {
     try {
-      await deleteNote(noteID);
+      await deleteNote(noteID, userID);
     } catch (error) {
       throw error;
     }
