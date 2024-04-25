@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 **.scss
+**.css.map
 **.js
 dist
 dist-ssr
