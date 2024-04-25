@@ -19,7 +19,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginToken, setLoginToken] = useState('');
   const [loadedNotes, setLoadedNotes] = useState<Note[]>([]);
-  const [noteToEdit, setNoteToEdit] = useState<Note | undefined>(undefined);
+  const [selectedNote, setSelectedNote] = useState<Note | undefined>(undefined);
   const [isUserEditing, setIsUserEditing] = useState<boolean>(false);
   const [saveMessage, setSaveMessage] = useState<string>('');
 
@@ -68,9 +68,17 @@ function App() {
   }, [loggedIn]);
 
   const handleNoteSelection = (note: Note) => {
-    setNoteToEdit(note);
-    setIsUserEditing(true);
+    setSelectedNote(note);
+    if (!isUserEditing) {
+      setIsUserEditing(true);
+    }
   };
+
+  const handleSavedNoteDeselection = () => {
+    setSelectedNote(undefined);
+    setIsUserEditing(false);
+  }
+
   const handleNoteSave = async (updatedNote: Note, exitNote: boolean) => {
     const saveRequestStatus = await sendNoteUpdateRequest(updatedNote, loginToken);
 
@@ -79,12 +87,13 @@ function App() {
     }
 
     if (saveRequestStatus === 200 && exitNote) {
-      setNoteToEdit(undefined);
+      setSelectedNote(undefined);
       setIsUserEditing(false);
     }
-    
+
     const updatedLoadedNotes = [...loadedNotes];
-    updatedLoadedNotes[updatedNote.index!] = updatedNote;
+    updatedLoadedNotes[updatedNote.index!].title = updatedNote.title;
+    updatedLoadedNotes[updatedNote.index!].content = updatedNote.content;
     setLoadedNotes(updatedLoadedNotes);
 
     return setSaveMessage('Saved');
@@ -93,7 +102,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       setSaveMessage('');
-    }, 1500);
+    }, 1000);
   }, [saveMessage]);
 
   const landingPage = !loggedIn ? (
@@ -101,8 +110,8 @@ function App() {
   ) : (
     <>
       <NoteList setNoteToEdit={handleNoteSelection} notes={loadedNotes} />
-      {saveMessage && <h3>{saveMessage}</h3>}
-      <NoteEditor handleNoteSave={handleNoteSave} note={noteToEdit} />
+      {saveMessage && <p>{saveMessage}</p>}
+      <NoteEditor handleNoteSave={handleNoteSave} handleNoteDeselection={handleSavedNoteDeselection} selectedNote={selectedNote} />
     </>
   );
 
