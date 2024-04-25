@@ -18,8 +18,10 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = ({
   handleNoteUpdate,
   handleNoteDeselection,
 }) => {
+
+  const createNoteButton = <button onClick={() => handleNewNoteClick()}>+</button>;
   if (!selectedNote) {
-    return <button onClick={() => handleNewNoteClick()}>+</button>;
+    return createNoteButton
   }
   const [currentTitle, setCurrentTitle] = useState(selectedNote.title);
   const [currentContent, setCurrentContent] = useState(selectedNote.content);

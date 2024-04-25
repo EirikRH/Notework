@@ -55,28 +55,31 @@ function App() {
     loginCheck();
   }, [loginToken]);
 
-  async function getUserNotes(loginToken: string): Promise<Note[]> {
+  async function getUserNotes(loginToken: string): Promise<void> {
     const storedNotes = await sendNotesRequest(loginToken);
 
     const indexedNotes = storedNotes.map((note: Note, index: number) => {
       return { index, ...note };
     });
-
-    return indexedNotes;
+    setLoadedNotes(indexedNotes);
   }
 
   useEffect(() => {
     if (!loggedIn) {
       return;
     }
-    const fetchNotes = async () => {
-      const userNotes = await getUserNotes(loginToken);
-      setLoadedNotes(userNotes);
-    };
-    fetchNotes();
+    getUserNotes(loginToken);
   }, [loggedIn]);
 
   const handleNoteSelection = (note: Note) => {
+    if (
+      note.index === selectedNote?.index &&
+      note.title === selectedNote?.title &&
+      note.content === selectedNote?.content
+    ) {
+      return handleSavedNoteDeselection();
+    }
+
     setSelectedNote(note);
     if (!isUserEditing) {
       setIsUserEditing(true);
@@ -99,34 +102,32 @@ function App() {
     if (!isUserEditing) {
       setIsUserEditing(true);
     }
-    console.log('new note clicked');
   };
-  const handleSaveNewNote = async (newNote: Note) => {
 
-    const saveNoteResponse = await sendNoteCreationRequest(newNote, loginToken);    
+  const handleSaveNewNote = async (newNote: Note) => {
+    const saveNoteResponse = await sendNoteCreationRequest(newNote, loginToken);
 
     if (saveNoteResponse.status !== 201) {
       return setSaveMessage('Failed to save new note');
     }
-    const savedNote = await saveNoteResponse.json()
+
+    const savedNote = await saveNoteResponse.json();
     savedNote.index = loadedNotes.length;
-    
     const updatedLoadedNotes = loadedNotes.concat(savedNote);
 
     setLoadedNotes(updatedLoadedNotes);
-    setIsCurrentNoteNew(false);  
-    setSelectedNote(savedNote)
-
-  }
+    setIsCurrentNoteNew(false);
+    setSelectedNote(savedNote);
+  };
 
   const handleNoteUpdate = async (updatedNote: Note, exitNote: boolean) => {
-    const saveRequestStatus = await sendNoteUpdateRequest(updatedNote, loginToken);
+    const updateRequestStatus = await sendNoteUpdateRequest(updatedNote, loginToken);
 
-    if (saveRequestStatus !== 200) {
-      return setSaveMessage('Failed to save note');
+    if (updateRequestStatus !== 200) {
+      return setSaveMessage('Failed to save update');
     }
 
-    if (saveRequestStatus === 200 && exitNote) {
+    if (updateRequestStatus === 200 && exitNote) {
       setSelectedNote(undefined);
       setIsUserEditing(false);
     }
@@ -136,7 +137,7 @@ function App() {
     updatedLoadedNotes[updatedNote.index!].content = updatedNote.content;
     setLoadedNotes(updatedLoadedNotes);
 
-    return setSaveMessage('Saved');
+    setSaveMessage('Saved');
   };
 
   useEffect(() => {
