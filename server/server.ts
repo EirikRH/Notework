@@ -53,8 +53,8 @@ app.post('/saveNewNote', async (req, res) => {
   const newNote = { title, content, userID };
 
   try {
-    await noteHandler.createNote(newNote);
-    res.status(201).send('Note created successfully');
+    const note = await noteHandler.createNote(newNote);
+    res.status(201).json(note);
   } catch (error) {
     res.status(400).send('Note creation failed');
   }

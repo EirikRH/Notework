@@ -1,7 +1,7 @@
 import { createNewNote, updateExistingNote, getNotesByUserID, deleteNote } from '../../database-utils/noteCRUD';
 
 export interface NoteHandler {
-  createNote: (newNote: NewNote) => Promise<void>;
+  createNote: (newNote: NewNote) => Promise<ExistingNote>;
   getUserNotes: (userID: number) => Promise<ExistingNote[] | null>;
   updateNote: (noteID: number, newTitle: string, newContent: string) => Promise<void>;
   deleteNote: (noteID: number) => Promise<void>;
@@ -22,7 +22,7 @@ interface ExistingNote {
 export class DatabaseNoteHandler implements NoteHandler {
   public async createNote(newNote: NewNote) {
     try {
-      await createNewNote(newNote.title, newNote.content, newNote.userID);
+      return await createNewNote(newNote.title, newNote.content, newNote.userID);
     } catch (error) {
       throw error;
     }
