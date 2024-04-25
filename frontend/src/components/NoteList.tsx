@@ -11,16 +11,19 @@ export interface Note {
 interface NoteListProps {
   notes: Note[];
   setNoteToEdit: (note: Note) => void;
+  handleNoteDelete: (note: Note) => void;
 }
 
-const NoteList: FunctionComponent<NoteListProps> = ({ notes, setNoteToEdit }: NoteListProps) => {
+const NoteList: FunctionComponent<NoteListProps> = ({ notes, setNoteToEdit, handleNoteDelete }: NoteListProps) => {
   const noteBanners = notes.map((note: Note) => {
-    return <NoteBanner setNoteToEdit={setNoteToEdit} note={note} key={note.index} />;
+    return (
+      <NoteBanner setNoteToEdit={setNoteToEdit} handleNoteDelete={handleNoteDelete} note={note} key={note.index} />
+    );
   });
 
   return (
     <>
-      <h3 className="noteMenuTitle">My notes</h3>
+      <h5 className="noteMenuTitle">My notes</h5>
       <ul className="noteList">{noteBanners}</ul>
     </>
   );

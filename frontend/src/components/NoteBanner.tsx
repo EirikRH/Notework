@@ -1,12 +1,24 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { Note } from './NoteList';
 
 interface NoteBannerProps {
   note: Note;
   setNoteToEdit: (note: Note) => void;
+  handleNoteDelete: (note: Note) => void;
 }
 
-const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note, setNoteToEdit, }) => {
+const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note, setNoteToEdit, handleNoteDelete }) => {
+  const [certain, setCertain] = useState(false);
+  const deleteButtonText = certain ? 'Are you sure?' : 'Delete';
+
+  useEffect(() => {
+    if (certain) {
+      const timer = setTimeout(() => {
+        setCertain(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [certain]);
   return (
     <li
       onClick={() => {
@@ -15,8 +27,17 @@ const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note, setNoteToEdit, }
       className="noteBanner"
       key={note.index}
     >
-      <h4>{note.title}</h4>
-      <h5>{note.content}</h5>
+      <p>{note.title}</p>
+      <p>{note.content}</p>
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          !certain ? setCertain(true) : handleNoteDelete(note);
+        }}
+      >
+        {deleteButtonText}
+      </button>
     </li>
   );
 };

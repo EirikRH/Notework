@@ -116,3 +116,20 @@ export async function sendNoteCreationRequest(newNote: Note, loginToken: string)
     throw error;
   }
 }
+
+export async function sendNoteDeletionRequest(note: Note, loginToken: string) {
+  const { note_ID } = note;
+  try {
+    const response = await fetch(`${API_URL}/deleteNote`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ loginToken, noteID: note_ID }),
+    });
+
+    return response.status;
+  } catch (error) {
+    throw error;
+  }
+}

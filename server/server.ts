@@ -93,9 +93,9 @@ app.delete('/deleteNote', async (req, res) => {
   const { userID } = tokenHandler.decodeToken(loginToken);
   try {
     await noteHandler.deleteNote(noteID, userID);
-    res.status(200)
+    res.status(200).send('Note deleted successfully');
   } catch (error) {
-    res.status(400)
+    res.status(400).send('Note delete failed');
   }
 });
 
