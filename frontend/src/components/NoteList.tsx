@@ -2,6 +2,7 @@ import { FunctionComponent } from 'react';
 import NoteBanner from './NoteBanner';
 
 export interface Note {
+  user_ID: number;
   note_ID: number;
   title: string;
   content: string;
@@ -9,12 +10,12 @@ export interface Note {
 }
 interface NoteListProps {
   notes: Note[];
-  editRequest: (note: Note) => void;
+  setNoteToEdit: (note: Note) => void;
 }
 
-const NoteList: FunctionComponent<NoteListProps> = ({ notes, editRequest }: NoteListProps) => {
+const NoteList: FunctionComponent<NoteListProps> = ({ notes, setNoteToEdit }: NoteListProps) => {
   const noteBanners = notes.map((note: Note) => {
-    return <NoteBanner editRequest={editRequest} note={note} />;
+    return <NoteBanner setNoteToEdit={setNoteToEdit} note={note} />;
   });
 
   return (

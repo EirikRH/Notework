@@ -32,7 +32,7 @@ export async function sendLoginRequest({ username, password }: Credentials): Pro
   }
 }
 
-export async function sendNoteRequest(loginToken: string): Promise<Note[]> {
+export async function sendNotesRequest(loginToken: string): Promise<Note[]> {
   try {
     const response = await fetch(`${API_URL}/userNotes`, {
       method: 'POST',
@@ -62,6 +62,30 @@ export async function sendUserCreationRequest(newUser: Credentials) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, password }),
+    });
+
+    return response.status;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function sendNoteUpdateRequest(note: Note, loginToken: string) {
+  const { note_ID, content, title, user_ID } = note;
+
+  try {
+    const response = await fetch(`${API_URL}/updateNote`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        loginToken,
+        ownerID: user_ID,
+        noteID: note_ID,
+        newTitle: title,
+        newContent: content,
+      }),
     });
 
     return response.status;

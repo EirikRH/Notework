@@ -71,7 +71,15 @@ app.post('/userNotes', async (req, res) => {
 });
 
 app.put('/updateNote', async (req, res) => {
-  const { noteID, newTitle, newContent } = req.body;
+  const { ownerID, noteID, newTitle, newContent, loginToken } = req.body;
+
+  const tokenData = tokenHandler.decodeToken(loginToken);
+  const validator = await userAuthenticator.authenticateUserFromTokenID(tokenData.userID);
+
+  if (validator.userID !== ownerID) {
+    return res.status(401).send('Unauthorized');
+  }
+
   try {
     await noteHandler.updateNote(noteID, newTitle, newContent);
     res.status(200).send('Note updated successfully');
