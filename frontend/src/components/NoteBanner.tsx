@@ -27,10 +27,11 @@ const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note, setNoteToEdit, h
       className="noteBanner"
       key={note.index}
     >
-      <p>{note.title}</p>
-      <p>{note.content}</p>
+      <p className='noteBannerTitle'>{note.title}</p>
+      <p className='noteBannerPreview'>{note.content}</p>
       <button
         type="button"
+        className={certain ? 'badButton' : 'neutralButton'}
         onClick={(event) => {
           event.stopPropagation();
           !certain ? setCertain(true) : handleNoteDelete(note);

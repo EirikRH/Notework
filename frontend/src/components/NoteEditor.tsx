@@ -18,7 +18,6 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = ({
   handleNoteUpdate,
   handleNoteDeselection,
 }) => {
-
   const NewNoteButton = <button onClick={() => handleNewNoteClick()}>+</button>;
   if (!selectedNote) {
     return NewNoteButton;
@@ -57,11 +56,17 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = ({
 
   return (
     <form>
-      <input type="text" onChange={(event) => handleTitleChange(event)} value={currentTitle} />
-      <textarea onChange={(event) => handleContentChange(event)} value={currentContent} />
+      <input
+        className={'note-title-area'}
+        type="text"
+        onChange={(event) => handleTitleChange(event)}
+        value={currentTitle}
+      />
+      <textarea className="note-text-area" onChange={(event) => handleContentChange(event)} value={currentContent} />
 
       <button
         type="button"
+        className="goodButton"
         disabled={!changed}
         onClick={() => {
           changed && handleSaveClick(false);
@@ -72,6 +77,7 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = ({
       </button>
       <button
         type="button"
+        className="neutralButton"
         onClick={() => {
           !changed ? handleNoteDeselection() : handleSaveClick(true);
         }}
