@@ -15,7 +15,7 @@ interface NoteListProps {
 
 const NoteList: FunctionComponent<NoteListProps> = ({ notes, setNoteToEdit }: NoteListProps) => {
   const noteBanners = notes.map((note: Note) => {
-    return <NoteBanner setNoteToEdit={setNoteToEdit} note={note} />;
+    return <NoteBanner setNoteToEdit={setNoteToEdit} note={note} key={note.index} />;
   });
 
   return (
