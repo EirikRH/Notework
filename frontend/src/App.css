@@ -38,6 +38,7 @@ textarea {
 }
 
 nav {
+  position: fixed;
   display: flex;
   width: 100vw;
   justify-content: space-between;
@@ -125,9 +126,10 @@ nav button {
 }
 
 .editNote {
-  grid-template-rows: 1fr 6fr 1fr 1fr;
   width: 100%;
-  display: grid;
+  height: calc(100vh - (10vh + 10px + 2rem));
+  margin-top: calc(30px + 2rem);
+  display: flex;
   flex-direction: column;
 }
 .editNote .editTitleArea {
@@ -140,16 +142,13 @@ nav button {
 }
 .editNote .editTextArea {
   background-color: rgb(46, 46, 46);
+  height: 70vh;
   padding: 4vh 4vw;
   font-weight: lighter;
   font-size: 0.8rem;
   width: 100%;
   font-size: 1.5rem;
   line-height: 2rem;
-}
-.editNote .editButtonHolder {
-  display: flex;
-  height: 10vh;
 }
 .editNote .editButtonHolder button {
   font-size: 2rem;
