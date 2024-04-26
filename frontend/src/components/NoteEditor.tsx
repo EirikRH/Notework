@@ -1,65 +1,41 @@
 import { FunctionComponent, useState, useEffect } from 'react';
-import { Note } from './NoteList';
+import { getGlobalContext } from '../context/AppContext';
+import NewNoteButton from './buttons/NewNoteButton';
+import SaveNoteButton from './buttons/SaveNoteButton';
+import CloseNoteButton from './buttons/CloseNoteButton';
 
-interface NoteEditorProps {
-  isCurrentNoteNew: boolean;
-  selectedNote?: Note | undefined;
-  handleNewNoteClick: () => void;
-  handleSaveNewNote: (note: Note) => void;
-  handleNoteUpdate: (note: Note, exitNote: boolean) => void;
-  handleNoteDeselection: () => void;
-}
+interface NoteEditorProps {}
 
-const NoteEditor: FunctionComponent<NoteEditorProps> = ({
-  selectedNote,
-  isCurrentNoteNew,
-  handleNewNoteClick,
-  handleSaveNewNote,
-  handleNoteUpdate,
-  handleNoteDeselection,
-}) => {
-  const NewNoteButton = (
-    <button id="NewNoteButton" onClick={() => handleNewNoteClick()}>
-      +
-    </button>
-  );
+const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
+  const { selectedNote, setIsCurrentNoteSaved } = getGlobalContext();
+
   if (!selectedNote) {
-    return NewNoteButton;
+    return <NewNoteButton />;
   }
   const [currentTitle, setCurrentTitle] = useState(selectedNote.title);
   const [currentContent, setCurrentContent] = useState(selectedNote.content);
-  const [changed, setChanged] = useState(false);
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setCurrentTitle(event.target.value);
-    setChanged(true);
+    setIsCurrentNoteSaved(false);
   }
   function handleContentChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setCurrentContent(event.target.value);
-    setChanged(true);
-  }
-
-  function handleSaveClick(exitNote: boolean) {
-    if (!isCurrentNoteNew) {
-      return handleNoteUpdate(currentNote, exitNote);
-    }
-
-    handleSaveNewNote(currentNote);
-    setChanged(false);
+    setIsCurrentNoteSaved(false);
   }
 
   useEffect(() => {
     if (selectedNote) {
       setCurrentTitle(selectedNote.title);
       setCurrentContent(selectedNote.content);
-      setChanged(false);
+      setIsCurrentNoteSaved(true);
     }
   }, [selectedNote]);
 
   const currentNote = { ...selectedNote, title: currentTitle, content: currentContent };
 
   return (
-    <form className="editNote">
+    <div className="editNote">
       <input
         className="editTitleArea"
         placeholder="Title.."
@@ -73,29 +49,11 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = ({
         onChange={(event) => handleContentChange(event)}
         value={currentContent}
       />
-      <div className='editButtonHolder'>
-        <button
-          type="button"
-          className="saveButton"
-          disabled={!changed}
-          onClick={() => {
-            changed && handleSaveClick(false);
-            setChanged(false);
-          }}
-        >
-          Save
-        </button>
-        <button
-          type="button"
-          className="exitButton"
-          onClick={() => {
-            !changed ? handleNoteDeselection() : handleSaveClick(true);
-          }}
-        >
-          Exit
-        </button>
+      <div className="editButtonHolder">
+        <SaveNoteButton alteredNote={currentNote} />
+        <CloseNoteButton />
       </div>
-    </form>
+    </div>
   );
 };
 

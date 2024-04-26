@@ -1,10 +1,12 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import { Credentials, LoginResponse, sendUserCreationRequest } from '../assets/server-requests';
-interface CreateUserProps {
-  attemptLogin: (credentials: Credentials) => Promise<LoginResponse>;
-}
+import { LoginResponse, sendLoginRequest, sendUserCreationRequest } from '../assets/server-requests';
+import { getGlobalContext, GlobalContextProps } from '../context/AppContext';
 
-const CreateUser: FunctionComponent<CreateUserProps> = ({ attemptLogin }) => {
+interface CreateUserProps {}
+
+const CreateUser: FunctionComponent<CreateUserProps> = () => {
+  const { setLoggedIn, setLoginToken, setActiveUser }: GlobalContextProps = getGlobalContext();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [validatorPassword, setValidatorPassword] = useState('');
@@ -29,7 +31,19 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({ attemptLogin }) => {
     const creationStatus = await sendUserCreationRequest({ username, password });
 
     if (creationStatus === 201) {
-      return await attemptLogin({ username, password });
+      const login: LoginResponse = await sendLoginRequest({ username, password });
+
+      if (login.status !== 200) {
+        return setCreationError(`${login.status}, ${login.data.error}`);
+      }
+      const token = login.data.loginToken;
+
+      localStorage.setItem('loginToken', token!);
+      setLoggedIn(true);
+      setActiveUser(username);
+      setLoginToken(token!);
+      window.location.href = '/';
+      return;
     }
     return setCreationError('User creation failed, username might be taken');
   }
@@ -67,9 +81,13 @@ const CreateUser: FunctionComponent<CreateUserProps> = ({ attemptLogin }) => {
         <button disabled={!passwordMatch || (username.length < 1 && true)} onClick={handleRegistrationClick}>
           Register User
         </button>
-        <button onClick={()=>{
-          window.location.href = '/'
-        }}>Already have an account?</button>
+        <button
+          onClick={() => {
+            window.location.href = '/';
+          }}
+        >
+          Already have an account?
+        </button>
       </div>
     </>
   );

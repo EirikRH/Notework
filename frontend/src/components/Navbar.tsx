@@ -1,26 +1,25 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState, useEffect } from 'react';
+import { getGlobalContext } from '../context/AppContext';
+import LogOutButton from './buttons/LogOutButton';
+import NoteList from './NoteList';
+interface NavbarProps {}
 
-interface NavbarProps {
-  loginCheck: () => void;
-  loggedIn: boolean;
-}
+const Navbar: FunctionComponent<NavbarProps> = () => {
+  const { loggedIn, isUserEditing } = getGlobalContext();
+  const [displayNoteList, setDisplayNoteList] = useState(false);
 
-const Navbar: FunctionComponent<NavbarProps> = ({ loginCheck, loggedIn }) => {
-  const logoutButton = loggedIn && (
-    <a href="/">
-      <button
-        onClick={() => {
-          localStorage.removeItem('loginToken');
-          loginCheck;
-        }}
-      >
-        Log Out
-      </button>
-    </a>
-  );
+  useEffect(() => {
+    if(isUserEditing){
+      setDisplayNoteList(false);
+    }
+  }, [isUserEditing]);
+
   return (
     <nav>
-      <p>Notework</p> {logoutButton}
+      <p>Notework</p> 
+      {loggedIn && <LogOutButton />}
+      <button onClick={() => setDisplayNoteList(!displayNoteList)}>Menu</button>
+      {displayNoteList && <NoteList />}
     </nav>
   );
 };
