@@ -3,7 +3,8 @@ import { getGlobalContext } from '../../context/AppContext';
 interface CloseNoteButtonProps {}
 
 const CloseNoteButton: FunctionComponent<CloseNoteButtonProps> = () => {
-  const { isCurrentNoteSaved, setSelectedNote } = getGlobalContext();
+  const { isCurrentNoteSaved, setSelectedNote, setDisplayNoteMenu } =
+    getGlobalContext();
   return (
     <button
       type="button"
@@ -11,6 +12,7 @@ const CloseNoteButton: FunctionComponent<CloseNoteButtonProps> = () => {
       disabled={!isCurrentNoteSaved}
       onClick={() => {
         setSelectedNote(undefined);
+        setDisplayNoteMenu(true);
       }}
     >
       Close

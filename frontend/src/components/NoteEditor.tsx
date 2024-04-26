@@ -7,7 +7,8 @@ import CloseNoteButton from './buttons/CloseNoteButton';
 interface NoteEditorProps {}
 
 const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
-  const { selectedNote, setIsCurrentNoteSaved } = getGlobalContext();
+  const { selectedNote, setIsCurrentNoteSaved, setDisplayNoteMenu } =
+    getGlobalContext();
 
   if (!selectedNote) {
     return <NewNoteButton />;
@@ -18,10 +19,12 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setCurrentTitle(event.target.value);
     setIsCurrentNoteSaved(false);
+    setDisplayNoteMenu(false);
   }
   function handleContentChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setCurrentContent(event.target.value);
     setIsCurrentNoteSaved(false);
+    setDisplayNoteMenu(false);
   }
 
   useEffect(() => {
@@ -32,7 +35,11 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
     }
   }, [selectedNote]);
 
-  const currentNote = { ...selectedNote, title: currentTitle, content: currentContent };
+  const currentNote = {
+    ...selectedNote,
+    title: currentTitle,
+    content: currentContent,
+  };
 
   return (
     <div className="editNote">

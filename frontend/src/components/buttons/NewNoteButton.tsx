@@ -4,13 +4,18 @@ import { getGlobalContext } from '../../context/AppContext';
 interface NewNoteButtonProps {}
 
 const NewNoteButton: FunctionComponent<NewNoteButtonProps> = () => {
-  const { setIsCurrentNoteNew, setIsUserEditing, setSelectedNote, isUserEditing, loadedNotes } = getGlobalContext();
+  const {
+    setDisplayNoteMenu,
+    setIsCurrentNoteNew,
+    setIsUserEditing,
+    setSelectedNote,
+    loadedNotes,
+  } = getGlobalContext();
 
   const handleNewNoteClick = () => {
     setIsCurrentNoteNew(true);
-    if (!isUserEditing) {
-      setIsUserEditing(true);
-    }
+    setIsUserEditing(true);
+    setDisplayNoteMenu(false);
     setSelectedNote({
       index: loadedNotes.length,
       title: '',

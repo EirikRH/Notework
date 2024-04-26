@@ -1,25 +1,23 @@
-import { FunctionComponent, useState, useEffect } from 'react';
+import { FunctionComponent} from 'react';
 import { getGlobalContext } from '../context/AppContext';
-import LogOutButton from './buttons/LogOutButton';
 import NoteList from './NoteList';
 interface NavbarProps {}
 
 const Navbar: FunctionComponent<NavbarProps> = () => {
-  const { loggedIn, isUserEditing } = getGlobalContext();
-  const [displayNoteList, setDisplayNoteList] = useState(false);
-
-  useEffect(() => {
-    if(isUserEditing){
-      setDisplayNoteList(false);
-    }
-  }, [isUserEditing]);
+  const { loggedIn, displayNoteMenu, setDisplayNoteMenu } = getGlobalContext();
 
   return (
     <nav>
-      <p>Notework</p> 
-      {loggedIn && <LogOutButton />}
-      <button onClick={() => setDisplayNoteList(!displayNoteList)}>Menu</button>
-      {displayNoteList && <NoteList />}
+      <p>Notework</p>
+      {loggedIn && (
+        <button
+          className={`menuButton ${displayNoteMenu && 'toggled'}`}
+          onClick={() => setDisplayNoteMenu(!displayNoteMenu)}
+        >
+          Notes
+        </button>
+      )}
+      {displayNoteMenu && <NoteList />}
     </nav>
   );
 };

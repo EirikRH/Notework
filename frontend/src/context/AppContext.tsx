@@ -19,6 +19,8 @@ export interface GlobalContextProps {
   setIsCurrentNoteSaved: React.Dispatch<React.SetStateAction<boolean>>;
   saveMessage: string;
   setSaveMessage: React.Dispatch<React.SetStateAction<string>>;
+  displayNoteMenu: boolean;
+  setDisplayNoteMenu: React.Dispatch<React.SetStateAction<boolean>>;
   resetGlobalContext: () => void;
   setContextAtLogin: (username: string) => void;
 }
@@ -42,9 +44,11 @@ export function GlobalContextProvider({
   const [isCurrentNoteNew, setIsCurrentNoteNew] = useState<boolean>(false);
   const [isCurrentNoteSaved, setIsCurrentNoteSaved] = useState<boolean>(true);
   const [saveMessage, setSaveMessage] = useState<string>('');
+  const [displayNoteMenu, setDisplayNoteMenu] = useState(false);
 
   const resetGlobalContext = () => {
     setLoggedIn(false);
+    setDisplayNoteMenu(false);
     setActiveUser('');
     setLoadedNotes([]);
     setSelectedNote(undefined);
@@ -56,7 +60,9 @@ export function GlobalContextProvider({
 
   const setContextAtLogin = (username: string) => {
     setLoggedIn(true);
+    setSelectedNote(undefined);
     setActiveUser(username);
+    setDisplayNoteMenu(true);
   };
 
   return (
@@ -78,6 +84,8 @@ export function GlobalContextProvider({
         setIsCurrentNoteSaved,
         saveMessage,
         setSaveMessage,
+        displayNoteMenu,
+        setDisplayNoteMenu,
         resetGlobalContext,
         setContextAtLogin,
       }}
