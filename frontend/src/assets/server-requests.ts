@@ -1,4 +1,4 @@
-import { Note } from '../components/NoteList';
+import { Note } from '../components/NoteMenu';
 
 const API_URL = '/api';
 
@@ -20,7 +20,10 @@ export interface NewNoteResponse {
     note: Note;
   };
 }
-export async function sendLoginRequest({ username, password }: Credentials): Promise<LoginResponse> {
+export async function sendLoginRequest({
+  username,
+  password,
+}: Credentials): Promise<LoginResponse> {
   try {
     const response = await fetch(`${API_URL}/login`, {
       method: 'POST',
@@ -100,7 +103,10 @@ export async function sendNoteUpdateRequest(note: Note, loginToken: string) {
   }
 }
 
-export async function sendNoteCreationRequest(newNote: Note, loginToken: string): Promise<Response> {
+export async function sendNoteCreationRequest(
+  newNote: Note,
+  loginToken: string
+): Promise<Response> {
   const { title, content } = newNote;
   try {
     const response = await fetch(`${API_URL}/saveNewNote`, {

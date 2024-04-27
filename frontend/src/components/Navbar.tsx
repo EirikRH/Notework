@@ -1,6 +1,5 @@
 import { FunctionComponent} from 'react';
 import { getGlobalContext } from '../context/AppContext';
-import NoteList from './NoteList';
 interface NavbarProps {}
 
 const Navbar: FunctionComponent<NavbarProps> = () => {
@@ -8,16 +7,15 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
 
   return (
     <nav>
-      <p>Notework</p>
+      <p className='logo'>Notework</p>
       {loggedIn && (
         <button
           className={`menuButton ${displayNoteMenu && 'toggled'}`}
           onClick={() => setDisplayNoteMenu(!displayNoteMenu)}
         >
-          Notes
+          Menu
         </button>
       )}
-      {displayNoteMenu && <NoteList />}
     </nav>
   );
 };

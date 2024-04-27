@@ -32,7 +32,9 @@ const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note }) => {
     if (deleteRequestStatus !== 200) {
       return setSaveMessage('Failed to delete note');
     }
-    const updatedLoadedNotes = loadedNotes.filter((loadedNote) => loadedNote.index !== note.index);
+    const updatedLoadedNotes = loadedNotes.filter(
+      (loadedNote) => loadedNote.index !== note.index
+    );
 
     setLoadedNotes(updatedLoadedNotes);
   };
@@ -72,10 +74,11 @@ const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note }) => {
       key={note.index}
     >
       <div className="previewHolder">
-        <p className="noteBannerTitle">{note.title}</p>
-        <p className="noteBannerPreview">{note.content}</p>
+        <p className="titlePreview">{note.title}</p>
+        <p className="contentPreview">{note.content}</p>
       </div>
       <button
+        className="deleteButton"
         type="button"
         onClick={(event) => {
           event.stopPropagation();

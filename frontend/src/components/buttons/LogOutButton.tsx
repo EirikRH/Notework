@@ -18,6 +18,7 @@ const LogOutButton: FunctionComponent<LogutButtonProps> = () => {
 
   return (
     <button
+    className='logOutButton'
       onClick={() => {
         handleLogoutClick();
       }}

@@ -8,8 +8,8 @@ import NoteBanner from './NoteBanner';
 
 interface NoteListProps {}
 
-const NoteList: FunctionComponent<NoteListProps> = () => {
-  const { activeUser, loadedNotes } = getGlobalContext();
+const NoteMenu: FunctionComponent<NoteListProps> = () => {
+  const { loadedNotes } = getGlobalContext();
   const [search, setSearch] = useState('');
   const [displayedNotes, setDisplayedNotes] = useState<Note[]>(loadedNotes);
 
@@ -27,23 +27,23 @@ const NoteList: FunctionComponent<NoteListProps> = () => {
         note.title.toLowerCase().includes(search.toLowerCase())
       );
     });
-    console.log(search);
 
     setDisplayedNotes(filteredNotes);
   }, [search, loadedNotes]);
 
   return (
-    <div className="noteMenu">
+    <ul className="menu">
       <input
+        autoFocus
+        className="searchBar"
         type="text"
         placeholder="Search..."
         onChange={(event) => setSearch(event.target.value)}
       />
       <ul className="noteList">{noteBanners}</ul>
-      <p>{activeUser}</p>
       <LogOutButton />
-    </div>
+    </ul>
   );
 };
 
-export default NoteList;
+export default NoteMenu;

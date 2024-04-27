@@ -18,9 +18,17 @@ export interface Note {
 }
 
 import { getGlobalContext } from './context/AppContext';
+import NoteMenu from './components/NoteMenu';
 
 function App() {
-  const { loggedIn, setLoggedIn, setLoadedNotes, saveMessage, setSaveMessage } = getGlobalContext();
+  const {
+    displayNoteMenu,
+    loggedIn,
+    setLoggedIn,
+    setLoadedNotes,
+    saveMessage,
+    setSaveMessage,
+  } = getGlobalContext();
 
   const loginToken: string = localStorage.getItem('loginToken')!;
 
@@ -56,7 +64,7 @@ function App() {
     <Login />
   ) : (
     <>
-      {saveMessage && <p className="saveMessage">{saveMessage}</p>}
+      {displayNoteMenu && <NoteMenu />}
       <NoteEditor />
     </>
   );
@@ -70,6 +78,7 @@ function App() {
           <Route path="/createUser" element={<CreateUser />} />
         </Routes>
       </main>
+      {saveMessage && <p className="saveMessage">{saveMessage}</p>}
     </>
   );
 }

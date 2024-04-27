@@ -44,6 +44,7 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
   return (
     <div className="editNote">
       <input
+        autoFocus
         className="editTitleArea"
         placeholder="Title.."
         type="text"

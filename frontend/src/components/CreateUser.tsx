@@ -1,11 +1,15 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import { LoginResponse, sendLoginRequest, sendUserCreationRequest } from '../assets/server-requests';
+import {
+  LoginResponse,
+  sendLoginRequest,
+  sendUserCreationRequest,
+} from '../assets/server-requests';
 import { getGlobalContext, GlobalContextProps } from '../context/AppContext';
 
 interface CreateUserProps {}
 
 const CreateUser: FunctionComponent<CreateUserProps> = () => {
-  const { setLoggedIn, setLoginToken, setActiveUser }: GlobalContextProps = getGlobalContext();
+  const { setContextAtLogin }: GlobalContextProps = getGlobalContext();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -28,10 +32,16 @@ const CreateUser: FunctionComponent<CreateUserProps> = () => {
       return;
     }
 
-    const creationStatus = await sendUserCreationRequest({ username, password });
+    const creationStatus = await sendUserCreationRequest({
+      username,
+      password,
+    });
 
     if (creationStatus === 201) {
-      const login: LoginResponse = await sendLoginRequest({ username, password });
+      const login: LoginResponse = await sendLoginRequest({
+        username,
+        password,
+      });
 
       if (login.status !== 200) {
         return setCreationError(`${login.status}, ${login.data.error}`);
@@ -39,11 +49,7 @@ const CreateUser: FunctionComponent<CreateUserProps> = () => {
       const token = login.data.loginToken;
 
       localStorage.setItem('loginToken', token!);
-      setLoggedIn(true);
-      setActiveUser(username);
-      setLoginToken(token!);
-      window.location.href = '/';
-      return;
+      setContextAtLogin(username);
     }
     return setCreationError('User creation failed, username might be taken');
   }
@@ -52,6 +58,7 @@ const CreateUser: FunctionComponent<CreateUserProps> = () => {
     <>
       <div className="newUserContainer">
         <input
+          autoFocus
           placeholder="Set Username"
           type="text"
           name="username"
@@ -78,7 +85,10 @@ const CreateUser: FunctionComponent<CreateUserProps> = () => {
         />
         {!passwordMatch && <p>Passwords do not match</p>}
         {creationError && <p className="creationError">{creationError}</p>}
-        <button disabled={!passwordMatch || (username.length < 1 && true)} onClick={handleRegistrationClick}>
+        <button
+          disabled={!passwordMatch || (username.length < 1 && true)}
+          onClick={handleRegistrationClick}
+        >
           Register User
         </button>
         <button

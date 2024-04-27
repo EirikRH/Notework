@@ -24,9 +24,9 @@ const NewNoteButton: FunctionComponent<NewNoteButtonProps> = () => {
   };
 
   return (
-    <button id="NewNoteButton" onClick={() => handleNewNoteClick()}>
+    <p id="NewNoteButton" onClick={() => handleNewNoteClick()}>
       +
-    </button>
+    </p>
   );
 };
 

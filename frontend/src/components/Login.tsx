@@ -30,6 +30,7 @@ const Login: FunctionComponent = () => {
   return (
     <div className="loginContainer">
       <input
+        autoFocus
         type="text"
         name="username"
         placeholder="Username..."
