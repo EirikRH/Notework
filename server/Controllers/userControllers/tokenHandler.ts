@@ -7,7 +7,7 @@ export interface TokenHandler {
 
 interface TokenData {
   username: string;
-  userID: number;
+  user_ID: number;
 }
 
 export class JwtTokenHandler implements TokenHandler {

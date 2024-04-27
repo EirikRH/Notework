@@ -72,10 +72,15 @@ nav button {
 }
 .editNote .editTitleArea {
   background-color: rgb(26, 26, 26);
-  padding: 10px 30px;
+  padding: 10px 15px;
   width: 100%;
-  height: 10vh;
-  font-size: 2rem;
+  font-size: 3rem;
+}
+.editNote .editTagsArea {
+  background-color: rgb(26, 26, 26);
+  padding: 10px 20px;
+  width: 100%;
+  font-size: 1.2rem;
   border-bottom: 1px solid rgb(192, 125, 48);
 }
 .editNote .editTextArea {
@@ -269,8 +274,23 @@ nav button {
   .menu {
     width: 100%;
   }
-  .menu .noteBanner .deleteButton {
+  .menu .searchBar {
+    font-size: 1.1rem;
+  }
+  .menu .noteBanner .previewHolder .titlePreview {
     font-size: 1.3rem;
+    max-height: 2rem;
+    min-height: 2rem;
+    line-height: 2rem;
+  }
+  .menu .noteBanner .previewHolder .contentPreview {
+    font-size: 1rem;
+    max-height: 1.5rem;
+    min-height: 1.5rem;
+    line-height: 1.5rem;
+  }
+  .menu .noteBanner .deleteButton {
+    font-size: 1.1rem;
   }
   .loginContainer button,
   .newUserContainer button {

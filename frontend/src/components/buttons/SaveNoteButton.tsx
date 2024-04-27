@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { getGlobalContext } from '../../context/AppContext';
 import { sendNoteCreationRequest, sendNoteUpdateRequest } from '../../assets/server-requests';
 import { Note } from '../../App';
@@ -19,13 +19,19 @@ const SaveNoteButton: FunctionComponent<SaveNoteButtonProps> = ({ alteredNote })
     setSaveMessage,
   } = getGlobalContext();
 
+  const[waitingForSave, setWaitingForSave] = useState(false);
+
   const loginToken = localStorage.getItem('loginToken')!;
 
   const handleSaveClick = async (note: Note) => {
+    if (waitingForSave) {
+      setSaveMessage('Not so fast');
+      return;
+    }
     if (!isCurrentNoteNew) {
       return await handleNoteUpdate(note);
     }
-    handleSaveNewNote(note);
+    await handleSaveNewNote(note);
   };
 
   const handleNoteUpdate = async (updatedNote: Note) => {
@@ -37,10 +43,12 @@ const SaveNoteButton: FunctionComponent<SaveNoteButtonProps> = ({ alteredNote })
     const updatedLoadedNotes = [...loadedNotes];
     updatedLoadedNotes[updatedNote.index!].title = updatedNote.title;
     updatedLoadedNotes[updatedNote.index!].content = updatedNote.content;
+    updatedLoadedNotes[updatedNote.index!].tags = updatedNote.tags;
 
     setLoadedNotes(updatedLoadedNotes);
     setIsCurrentNoteSaved(true);
     setSaveMessage('Saved');
+    setWaitingForSave(false);
   };
 
   const handleSaveNewNote = async (newNote: Note) => {
@@ -59,6 +67,7 @@ const SaveNoteButton: FunctionComponent<SaveNoteButtonProps> = ({ alteredNote })
     setIsCurrentNoteSaved(true);
     setIsCurrentNoteNew(false);
     setSaveMessage('Saved');
+    setWaitingForSave(false);
   };
   return (
     <button

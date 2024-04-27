@@ -1,3 +1,7 @@
+import {
+  ExistingNote,
+  NewNote,
+} from '../Controllers/noteControllers/databaseNoteHandler';
 import { databaseClient } from './dbClient';
 
 export async function getNotesByUserID(userID: number) {
@@ -18,13 +22,15 @@ export async function getNotesByUserID(userID: number) {
   }
 }
 
-export async function createNewNote(title: string, content: string, userID: number) {
+export async function createNewNote(newNote: NewNote, user_ID) {
+  const { title, tags, content } = newNote;
   try {
     const newNote = await databaseClient.notes.create({
       data: {
-        user_ID: userID,
+        user_ID: user_ID,
         title,
         content,
+        tags,
       },
     });
     return newNote;
@@ -35,15 +41,17 @@ export async function createNewNote(title: string, content: string, userID: numb
   }
 }
 
-export async function updateExistingNote(noteID: number, newTitle: string, newContent: string) {
+export async function updateExistingNote(updatedNote: ExistingNote) {
+  const { note_ID, title, content, tags } = updatedNote;
   try {
     await databaseClient.notes.update({
       where: {
-        note_ID: noteID,
+        note_ID,
       },
       data: {
-        title: newTitle,
-        content: newContent,
+        title,
+        content,
+        tags,
       },
     });
   } catch (error) {

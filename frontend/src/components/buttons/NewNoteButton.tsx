@@ -16,10 +16,12 @@ const NewNoteButton: FunctionComponent<NewNoteButtonProps> = () => {
     setIsCurrentNoteNew(true);
     setIsUserEditing(true);
     setDisplayNoteMenu(false);
+    
     setSelectedNote({
       index: loadedNotes.length,
       title: '',
       content: '',
+      tags: '',
     });
   };
 

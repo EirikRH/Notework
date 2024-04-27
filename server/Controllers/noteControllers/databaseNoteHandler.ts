@@ -1,28 +1,35 @@
-import { createNewNote, updateExistingNote, getNotesByUserID, deleteNote } from '../../database-utils/noteCRUD';
+import {
+  createNewNote,
+  updateExistingNote,
+  getNotesByUserID,
+  deleteNote,
+} from '../../database-utils/noteCRUD';
 
 export interface NoteHandler {
-  createNote: (newNote: NewNote) => Promise<ExistingNote>;
+  createNote: (newNote: NewNote, user_ID: number) => Promise<ExistingNote>;
   getUserNotes: (userID: number) => Promise<ExistingNote[] | null>;
-  updateNote: (noteID: number, newTitle: string, newContent: string) => Promise<void>;
+  updateNote: (updatedNote: ExistingNote) => Promise<void>;
   deleteNote: (noteID: number, userID: number) => Promise<void>;
 }
 
-interface NewNote {
-  title: string;
-  content: string;
+export interface NewNote {
+  title?: string;
+  tags?: string;
+  content?: string;
   userID: number;
 }
-interface ExistingNote {
+export interface ExistingNote {
   note_ID: number;
   user_ID: number;
   title: string | null;
-  content: string | null;
+  content?: string | null;
+  tags?: string | null;
 }
 
 export class DatabaseNoteHandler implements NoteHandler {
-  public async createNote(newNote: NewNote) {
+  public async createNote(newNote: NewNote, user_ID: number) {
     try {
-      return await createNewNote(newNote.title, newNote.content, newNote.userID);
+      return await createNewNote(newNote, user_ID);
     } catch (error) {
       throw error;
     }
@@ -36,17 +43,18 @@ export class DatabaseNoteHandler implements NoteHandler {
     }
   }
 
-  public async updateNote(noteID: number, newTitle: string, newContent: string) {
+  public async updateNote(updatedNote: ExistingNote) {
+    
     try {
-      await updateExistingNote(noteID, newTitle, newContent);
+      await updateExistingNote(updatedNote);
     } catch (error) {
       throw error;
     }
   }
 
-  public async deleteNote(noteID: number, userID: number) {
+  public async deleteNote(note_ID: number, user_ID: number) {
     try {
-      await deleteNote(noteID, userID);
+      await deleteNote(note_ID, user_ID);
     } catch (error) {
       throw error;
     }

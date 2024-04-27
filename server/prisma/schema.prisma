@@ -27,6 +27,7 @@ model notes {
   user_ID Int
   title   String?
   content String?
+  tags    String?
 
   creator users @relation("creator", fields: [user_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction)
 }

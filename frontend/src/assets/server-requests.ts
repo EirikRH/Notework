@@ -1,4 +1,4 @@
-import { Note } from '../components/NoteMenu';
+import { Note } from '../App';
 
 const API_URL = '/api';
 
@@ -79,9 +79,10 @@ export async function sendUserCreationRequest(newUser: Credentials) {
   }
 }
 
-export async function sendNoteUpdateRequest(note: Note, loginToken: string) {
-  const { note_ID, content, title, user_ID } = note;
-
+export async function sendNoteUpdateRequest(
+  updatedNote: Note,
+  loginToken: string
+) {
   try {
     const response = await fetch(`${API_URL}/updateNote`, {
       method: 'PUT',
@@ -90,10 +91,7 @@ export async function sendNoteUpdateRequest(note: Note, loginToken: string) {
       },
       body: JSON.stringify({
         loginToken,
-        ownerID: user_ID,
-        noteID: note_ID,
-        newTitle: title,
-        newContent: content,
+        updatedNote,
       }),
     });
 
@@ -107,14 +105,14 @@ export async function sendNoteCreationRequest(
   newNote: Note,
   loginToken: string
 ): Promise<Response> {
-  const { title, content } = newNote;
+  newNote;
   try {
     const response = await fetch(`${API_URL}/saveNewNote`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ title, content, loginToken }),
+      body: JSON.stringify({ newNote, loginToken }),
     });
 
     return response;
@@ -131,7 +129,7 @@ export async function sendNoteDeletionRequest(note: Note, loginToken: string) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ loginToken, noteID: note_ID }),
+      body: JSON.stringify({ loginToken, note_ID }),
     });
 
     return response.status;

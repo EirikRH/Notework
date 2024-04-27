@@ -14,6 +14,7 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
     return <NewNoteButton />;
   }
   const [currentTitle, setCurrentTitle] = useState(selectedNote.title);
+  const [currentTags, setCurrentTags] = useState(selectedNote.tags);
   const [currentContent, setCurrentContent] = useState(selectedNote.content);
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -25,6 +26,36 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
     setCurrentContent(event.target.value);
     setIsCurrentNoteSaved(false);
     setDisplayNoteMenu(false);
+  }
+
+  function handleTagsChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const updatedTags = event.target.value;
+    const formattedTags = addAtsToTags(updatedTags);
+
+    setCurrentTags(formattedTags);
+    setIsCurrentNoteSaved(false);
+    setDisplayNoteMenu(false);
+  }
+
+  function addAtsToTags(tags: string): string {
+    if (!tags) {
+      return '';
+    }
+
+    if (tags.endsWith(' ')) {
+      return tags;
+    }
+
+    const tagsArray = tags.split(' ');
+
+    const updatedWords = tagsArray.map((word) => {
+      if (word.startsWith('@')) {
+        return word;
+      }
+      return `@${word}`;
+    });
+    const updatedString = updatedWords.join(' ');
+    return updatedString;
   }
 
   useEffect(() => {
@@ -39,12 +70,20 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
     ...selectedNote,
     title: currentTitle,
     content: currentContent,
+    tags: currentTags,
   };
 
   return (
     <div className="editNote">
       <input
         autoFocus
+        className="editTagsArea"
+        placeholder="@tag @your @idea"
+        type="text"
+        onChange={(event) => handleTagsChange(event)}
+        value={currentTags}
+      />
+      <input
         className="editTitleArea"
         placeholder="Title.."
         type="text"

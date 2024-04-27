@@ -7,14 +7,14 @@ export interface UserAuthenticator {
 
 interface ValidatedUser {
   username: string;
-  userID: number;
+  user_ID: number;
 }
 
 export class DatabaseUserAuthenticator implements UserAuthenticator {
   public async authenticateLoginAttempt(username: string, password: string): Promise<ValidatedUser> {
     try {
       const user = await getUserByCredentials(username, password);
-      return { username: user.username, userID: user.ID };
+      return { username: user.username, user_ID: user.ID };
     } catch (error) {
       throw error;
     }
@@ -22,7 +22,7 @@ export class DatabaseUserAuthenticator implements UserAuthenticator {
   public async authenticateUserFromTokenID(tokenID: number): Promise<ValidatedUser> {
     try {
       const user = await getUserByID(tokenID);
-      return { username: user.username, userID: user.ID };
+      return { username: user.username, user_ID: user.ID };
     } catch (error) {
       throw error;
     }

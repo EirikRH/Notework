@@ -21,13 +21,21 @@ const NoteMenu: FunctionComponent<NoteListProps> = () => {
     if (!search) {
       return setDisplayedNotes(loadedNotes);
     }
-    const filteredNotes = loadedNotes.filter((note: Note) => {
-      return (
-        note.content.toLowerCase().includes(search.toLowerCase()) ||
-        note.title.toLowerCase().includes(search.toLowerCase())
-      );
-    });
+    const searchArr = search.split(' ');
+    const searchTags = searchArr.filter((word) => word.startsWith('@'));
+    const searchWords = searchArr
+      .filter((word) => !word.startsWith('@'))
+      .join(' ');
 
+    const filteredNotes = loadedNotes.filter((note: Note) => {
+      for (let i = 0; i < searchTags.length; i++) {
+        if (note.tags!.toLowerCase().includes(searchTags[i].toLowerCase())) {
+          return true;
+        }
+      }
+      note.content.toLowerCase().includes(searchWords.toLowerCase()) ||
+        note.title.toLowerCase().includes(searchWords.toLowerCase());
+    });
     setDisplayedNotes(filteredNotes);
   }, [search, loadedNotes]);
 
@@ -37,7 +45,7 @@ const NoteMenu: FunctionComponent<NoteListProps> = () => {
         autoFocus
         className="searchBar"
         type="text"
-        placeholder="Search..."
+        placeholder="Example search: @yourtag @memo words to search for"
         onChange={(event) => setSearch(event.target.value)}
       />
       <ul className="noteList">{noteBanners}</ul>

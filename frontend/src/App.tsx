@@ -15,7 +15,7 @@ export interface Note {
   title: string;
   content: string;
   index?: number;
-  tags?: string[];
+  tags?: string;
 }
 
 import { getGlobalContext } from './context/AppContext';

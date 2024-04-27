@@ -47,13 +47,17 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/saveNewNote', async (req, res) => {
-  const { title, content } = req.body;
-  const { userID } = tokenHandler.decodeToken(req.body.loginToken);
-
-  const newNote = { title, content, userID };
+  const { newNote, loginToken } = req.body;
+  
+  const tokenData  = tokenHandler.decodeToken(loginToken);
+  const validator = await userAuthenticator.authenticateUserFromTokenID(tokenData.user_ID);
+  
+  if (!validator) {
+    return res.status(401).send('Unauthorized');
+  }
 
   try {
-    const note = await noteHandler.createNote(newNote);
+    const note = await noteHandler.createNote(newNote, validator.user_ID);
     res.status(201).json(note);
   } catch (error) {
     res.status(400).send('Note creation failed');
@@ -61,9 +65,9 @@ app.post('/saveNewNote', async (req, res) => {
 });
 
 app.post('/userNotes', async (req, res) => {
-  const { userID } = tokenHandler.decodeToken(req.body.loginToken);
+  const {  user_ID } = tokenHandler.decodeToken(req.body.loginToken);
   try {
-    const notes = await noteHandler.getUserNotes(userID);
+    const notes = await noteHandler.getUserNotes(user_ID);
     res.status(200).json(notes);
   } catch (error) {
     res.status(400).send('Failed to get notes');
@@ -71,17 +75,17 @@ app.post('/userNotes', async (req, res) => {
 });
 
 app.put('/updateNote', async (req, res) => {
-  const { ownerID, noteID, newTitle, newContent, loginToken } = req.body;
+  const { updatedNote, loginToken } = req.body;
 
   const tokenData = tokenHandler.decodeToken(loginToken);
-  const validator = await userAuthenticator.authenticateUserFromTokenID(tokenData.userID);
+  const validator = await userAuthenticator.authenticateUserFromTokenID(tokenData.user_ID);
 
-  if (validator.userID !== ownerID) {
+  if (validator.user_ID !== updatedNote.user_ID) {
     return res.status(401).send('Unauthorized');
   }
 
   try {
-    await noteHandler.updateNote(noteID, newTitle, newContent);
+    await noteHandler.updateNote(updatedNote);
     res.status(200).send('Note updated successfully');
   } catch (error) {
     res.status(400).send('Failed to update note');
@@ -89,15 +93,26 @@ app.put('/updateNote', async (req, res) => {
 });
 
 app.delete('/deleteNote', async (req, res) => {
-  const { noteID, loginToken } = req.body;
-  const { userID } = tokenHandler.decodeToken(loginToken);
+  const { note_ID, loginToken } = req.body;
+  const { user_ID } = tokenHandler.decodeToken(loginToken);
   try {
-    await noteHandler.deleteNote(noteID, userID);
+    await noteHandler.deleteNote(note_ID, user_ID);
     res.status(200).send('Note deleted successfully');
   } catch (error) {
     res.status(400).send('Note delete failed');
   }
 });
+
+app.post('/decode', async (req, res) => {
+  const { loginToken } = req.body;
+  try {
+    const decodedToken = tokenHandler.decodeToken(loginToken);
+    res.status(200).json(decodedToken);
+  } catch (error) {
+    res.status(400).send('Failed to decode token');
+  }
+
+})
 
 app.listen({ port }, () => {
   console.log(`Server is running at http://localhost:${port}`);
