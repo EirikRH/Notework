@@ -25,6 +25,7 @@ function App() {
     displayNoteMenu,
     creatingUser,
     loggedIn,
+    setLoggedIn,
     setLoadedNotes,
     saveMessage,
     setSaveMessage,
@@ -38,6 +39,12 @@ function App() {
     }
     getUserNotes(loginToken);
   }, [loggedIn]);
+
+  useEffect(() => {
+    if(loginToken){
+      setLoggedIn(true);
+    }
+  }, [loginToken]);
 
   async function getUserNotes(loginToken: string): Promise<void> {
     const storedNotes = await sendNotesRequest(loginToken);
