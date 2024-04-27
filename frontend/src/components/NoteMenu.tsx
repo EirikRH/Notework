@@ -10,34 +10,60 @@ interface NoteListProps {}
 
 const NoteMenu: FunctionComponent<NoteListProps> = () => {
   const { loadedNotes } = getGlobalContext();
-  const [search, setSearch] = useState('');
+  const [searchString, setSearchString] = useState('');
   const [displayedNotes, setDisplayedNotes] = useState<Note[]>(loadedNotes);
 
   const noteBanners = displayedNotes.map((note: Note) => {
     return <NoteBanner note={note} key={note.index} />;
   });
 
-  useEffect(() => {
-    if (!search) {
-      return setDisplayedNotes(loadedNotes);
-    }
+  const filterNotes = (search: string, notes: Note[]) => {
+    let notesToFilter = notes;
     const searchArr = search.split(' ');
     const searchTags = searchArr.filter((word) => word.startsWith('@'));
     const searchWords = searchArr
       .filter((word) => !word.startsWith('@'))
       .join(' ');
 
-    const filteredNotes = loadedNotes.filter((note: Note) => {
-      for (let i = 0; i < searchTags.length; i++) {
-        if (note.tags!.toLowerCase().includes(searchTags[i].toLowerCase())) {
-          return true;
+    if (searchTags.length > 0) {
+      notesToFilter = loadedNotes.filter((note: Note) => {
+        for (let i = 0; i < searchTags.length; i++) {
+          const searchTag = searchTags[i];
+          if (!note.tags!.toLowerCase().includes(searchTag.toLowerCase())) {
+            return false;
+          }
         }
+        return true;
+      });
+    }
+
+    if (!searchWords) {
+      return notesToFilter;
+    }
+
+    const fullyFilteredNotes = notesToFilter.filter((note: Note, i) => {
+      if (
+        note.content.toLowerCase().includes(searchWords.toLowerCase()) ||
+        note.title.toLowerCase().includes(searchWords.toLowerCase())
+      ) {
+        return true;
       }
-      note.content.toLowerCase().includes(searchWords.toLowerCase()) ||
-        note.title.toLowerCase().includes(searchWords.toLowerCase());
+      return false;
     });
+
+    return fullyFilteredNotes;
+  };
+  const handleSearchChange = (event: any) => {
+    setSearchString(event.target.value);
+  };
+  useEffect(() => {
+    if (!searchString) {
+      return setDisplayedNotes(loadedNotes);
+    }
+
+    const filteredNotes = filterNotes(searchString, loadedNotes);
     setDisplayedNotes(filteredNotes);
-  }, [search, loadedNotes]);
+  }, [searchString, loadedNotes]);
 
   return (
     <ul className="menu">
@@ -45,8 +71,8 @@ const NoteMenu: FunctionComponent<NoteListProps> = () => {
         autoFocus
         className="searchBar"
         type="text"
-        placeholder="Example search: @yourtag @memo words to search for"
-        onChange={(event) => setSearch(event.target.value)}
+        placeholder="Example filter: @yourtag @memo words to search for"
+        onChange={(event) => handleSearchChange(event)}
       />
       <ul className="noteList">{noteBanners}</ul>
       <LogOutButton />
