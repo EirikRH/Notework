@@ -7,8 +7,12 @@ import CloseNoteButton from './buttons/CloseNoteButton';
 interface NoteEditorProps {}
 
 const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
-  const { selectedNote, setIsCurrentNoteSaved, setDisplayNoteMenu } =
-    getGlobalContext();
+  const {
+    isUserEditing,
+    selectedNote,
+    setIsCurrentNoteSaved,
+    setDisplayNoteMenu,
+  } = getGlobalContext();
 
   if (!selectedNote) {
     return <NewNoteButton />;
@@ -97,8 +101,14 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
         value={currentContent}
       />
       <div className="editButtonHolder">
-        <SaveNoteButton alteredNote={currentNote} />
-        <CloseNoteButton />
+        {isUserEditing ? (
+          <>
+            <SaveNoteButton alteredNote={currentNote} />
+            <CloseNoteButton />
+          </>
+        ) : (
+          <NewNoteButton />
+        )}
       </div>
     </div>
   );

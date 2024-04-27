@@ -7,7 +7,7 @@ import {
 import { getGlobalContext } from '../context/AppContext';
 
 const Login: FunctionComponent = () => {
-  const { setContextAtLogin } = getGlobalContext();
+  const { setContextAtLogin, setCreatingUser} = getGlobalContext();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -20,7 +20,7 @@ const Login: FunctionComponent = () => {
     const login: LoginResponse = await sendLoginRequest(credentials);
 
     if (login.status !== 200) {
-      return setLoginErrorMesage(`${login.status}, ${login.data.error}`);
+      return setLoginErrorMesage(`${login.data.error}`);
     }
 
     const token = login.data.loginToken;
@@ -31,12 +31,14 @@ const Login: FunctionComponent = () => {
     <div className="loginContainer">
       <input
         autoFocus
+        className="loginInput"
         type="text"
         name="username"
         placeholder="Username..."
         onChange={(event) => setUsername(event.target.value)}
       />
       <input
+        className="loginInput"
         type="password"
         name="password"
         placeholder="Password..."
@@ -48,9 +50,13 @@ const Login: FunctionComponent = () => {
       >
         Login
       </button>
-      <a href="/createUser">
-        <button>New User</button>
-      </a>
+      <button
+        onClick={() => {
+          setCreatingUser(true);          
+        }}
+      >
+        New User
+      </button>
       {loginErrorMessage && <h3>{loginErrorMessage}</h3>}
     </div>
   );

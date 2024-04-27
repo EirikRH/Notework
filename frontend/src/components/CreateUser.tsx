@@ -9,7 +9,7 @@ import { getGlobalContext, GlobalContextProps } from '../context/AppContext';
 interface CreateUserProps {}
 
 const CreateUser: FunctionComponent<CreateUserProps> = () => {
-  const { setContextAtLogin }: GlobalContextProps = getGlobalContext();
+  const { setContextAtLogin, setCreatingUser }: GlobalContextProps = getGlobalContext();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -26,9 +26,17 @@ const CreateUser: FunctionComponent<CreateUserProps> = () => {
 
   async function handleRegistrationClick(event: any) {
     event.preventDefault();
-    setCreationError('');
+    if (
+      password.length < 1 ||
+      validatorPassword.length < 1 ||
+      username.length < 1
+    ) {
+      setCreationError('Please fill out all fields correctly');
+      return;
+    }
 
-    if (!passwordMatch) {
+    if (password !== validatorPassword) {
+      setCreationError('Passwords do not match');
       return;
     }
 
@@ -37,27 +45,30 @@ const CreateUser: FunctionComponent<CreateUserProps> = () => {
       password,
     });
 
-    if (creationStatus === 201) {
+    if (creationStatus !== 201) {
+        return setCreationError('User creation failed, username might be taken');
+    }
+
       const login: LoginResponse = await sendLoginRequest({
         username,
         password,
       });
 
       if (login.status !== 200) {
-        return setCreationError(`${login.status}, ${login.data.error}`);
+        return setCreationError(`${login.data.error}`);
       }
       const token = login.data.loginToken;
-
       localStorage.setItem('loginToken', token!);
       setContextAtLogin(username);
+      setCreatingUser(false);
     }
-    return setCreationError('User creation failed, username might be taken');
-  }
+  
 
   return (
     <div className="newUserContainer">
       <input
         autoFocus
+        className="loginInput"
         placeholder="Set Username"
         type="text"
         name="username"
@@ -68,6 +79,7 @@ const CreateUser: FunctionComponent<CreateUserProps> = () => {
         value={username}
       />
       <input
+        className="loginInput"
         placeholder="Set Password"
         type="password"
         name="password1"
@@ -77,22 +89,28 @@ const CreateUser: FunctionComponent<CreateUserProps> = () => {
         }}
       />
       <input
+        className="loginInput"
         placeholder="Repeat Password"
         type="password"
         name="ValidatorPassword"
-        onChange={(event) => setValidatorPassword(event.target.value)}
+        onChange={(event) => {
+          setValidatorPassword(event.target.value);
+          setCreationError('');
+        }}
       />
       {!passwordMatch && <p>Passwords do not match</p>}
       {creationError && <p className="creationError">{creationError}</p>}
       <button
-        disabled={!passwordMatch || (username.length < 1 && true)}
-        onClick={handleRegistrationClick}
+        onClick={(event) => {
+          handleRegistrationClick(event);
+          setCreationError('');
+        }}
       >
         Register User
       </button>
       <button
         onClick={() => {
-          window.location.href = '/';
+          setCreatingUser(false);
         }}
       >
         Already have an account?

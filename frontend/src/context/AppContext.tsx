@@ -3,6 +3,8 @@ import React, { createContext, useState, useContext } from 'react';
 import { Note } from '../App';
 
 export interface GlobalContextProps {
+  creatingUser: boolean;
+  setCreatingUser: React.Dispatch<React.SetStateAction<boolean>>;
   loggedIn: boolean;
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   activeUser: string;
@@ -36,6 +38,7 @@ export function GlobalContextProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const [creatingUser, setCreatingUser] = useState<boolean>(false);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [activeUser, setActiveUser] = useState<string>('');
   const [loadedNotes, setLoadedNotes] = useState<Note[]>([]);
@@ -68,6 +71,8 @@ export function GlobalContextProvider({
   return (
     <GlobalContext.Provider
       value={{
+        creatingUser,
+        setCreatingUser,
         loggedIn,
         setLoggedIn,
         activeUser,

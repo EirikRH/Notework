@@ -9,15 +9,14 @@ body {
 }
 
 main {
-  background-color: rgb(26, 26, 26);
-  position: relative;
-  top: 70px;
-  margin: 0 auto;
+  height: calc(100vh - 70px);
   flex-grow: 1;
   display: flex;
   align-items: center;
   flex-direction: row-reverse;
-  height: calc(100vh - 140px);
+  overflow-y: scroll;
+  overflow-x: scroll;
+  background-color: rgb(26, 26, 26);
 }
 
 button {
@@ -41,7 +40,6 @@ textarea {
 }
 
 nav {
-  position: fixed;
   display: flex;
   justify-content: space-between;
   width: 100vw;
@@ -96,7 +94,6 @@ nav button {
 .editNote .editButtonHolder button {
   font-size: 2rem;
   border-radius: 0;
-  position: fixed;
   width: 50%;
   height: 10vh;
 }
@@ -111,12 +108,6 @@ nav button {
   bottom: 0;
   height: 70px;
 }
-.editNote .editButtonHolder .saveButton {
-  left: 0;
-}
-.editNote .editButtonHolder .exitButton {
-  right: 0;
-}
 
 .toggled {
   background-color: rgb(192, 125, 48);
@@ -128,6 +119,7 @@ nav button {
   display: flex;
   flex-direction: column;
   width: 45%;
+  padding-bottom: 70px;
 }
 .menu .searchBar {
   padding: 0px 0px 0px 10px;
@@ -231,14 +223,15 @@ nav button {
 
 .newUserContainer,
 .loginContainer {
-  height: fit-content;
   width: fit-content;
-  margin: 0 auto;
-  padding: 0vh;
-  width: 50vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
 }
 .newUserContainer input,
 .newUserContainer button,
@@ -296,10 +289,23 @@ nav button {
   .newUserContainer button {
     font-size: 1.5rem;
   }
-  .loginContainer input,
-  .newUserContainer input {
-    width: 100%;
-    min-width: 30px;
+  .loginContainer .loginInput,
+  .newUserContainer .loginInput {
+    font-size: 1.6rem;
+  }
+}
+@media screen and (max-height: 600px) {
+  .loginContainer,
+  .newUserContainer {
+    margin-top: 70px;
+  }
+  .loginContainer button,
+  .newUserContainer button {
+    font-size: 1.2rem;
+  }
+  .loginContainer .loginInput,
+  .newUserContainer .loginInput {
+    font-size: 1.3rem;
   }
 }
 

@@ -1,6 +1,5 @@
 import './App.css';
 import { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
 
 import Login from './components/Login';
 import Navbar from './components/Navbar';
@@ -9,6 +8,8 @@ import NoteEditor from './components/NoteEditor';
 
 import { sendNotesRequest } from './assets/server-requests';
 
+import { getGlobalContext } from './context/AppContext';
+import NoteMenu from './components/NoteMenu';
 export interface Note {
   user_ID?: number;
   note_ID?: number;
@@ -18,26 +19,18 @@ export interface Note {
   tags?: string;
 }
 
-import { getGlobalContext } from './context/AppContext';
-import NoteMenu from './components/NoteMenu';
-
 function App() {
+  
   const {
     displayNoteMenu,
+    creatingUser,
     loggedIn,
-    setLoggedIn,
     setLoadedNotes,
     saveMessage,
     setSaveMessage,
   } = getGlobalContext();
 
   const loginToken: string = localStorage.getItem('loginToken')!;
-
-  useEffect(() => {
-    if (loginToken) {
-      setLoggedIn(true);
-    }
-  }, [loginToken]);
 
   useEffect(() => {
     if (!loggedIn) {
@@ -62,7 +55,10 @@ function App() {
   }, [saveMessage]);
 
   const landingPage = !loggedIn ? (
-    <Login />
+    <>
+      {!creatingUser && <Login />}
+      {creatingUser && <CreateUser />}
+    </>
   ) : (
     <>
       {displayNoteMenu && <NoteMenu />}
@@ -74,10 +70,7 @@ function App() {
     <>
       <Navbar />
       <main>
-        <Routes>
-          <Route path="/" element={landingPage} />
-          <Route path="/createUser" element={<CreateUser />} />
-        </Routes>
+        {landingPage}
       </main>
       {saveMessage && <p className="saveMessage">{saveMessage}</p>}
     </>
