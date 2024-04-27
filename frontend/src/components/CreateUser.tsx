@@ -55,51 +55,49 @@ const CreateUser: FunctionComponent<CreateUserProps> = () => {
   }
 
   return (
-    <>
-      <div className="newUserContainer">
-        <input
-          autoFocus
-          placeholder="Set Username"
-          type="text"
-          name="username"
-          onChange={(event) => {
-            setUsername(event.target.value.split(' ').join(''));
-            setCreationError('');
-          }}
-          value={username}
-        />
-        <input
-          placeholder="Set Password"
-          type="password"
-          name="password1"
-          onChange={(event) => {
-            setPassword(event.target.value);
-            setCreationError('');
-          }}
-        />
-        <input
-          placeholder="Repeat Password"
-          type="password"
-          name="ValidatorPassword"
-          onChange={(event) => setValidatorPassword(event.target.value)}
-        />
-        {!passwordMatch && <p>Passwords do not match</p>}
-        {creationError && <p className="creationError">{creationError}</p>}
-        <button
-          disabled={!passwordMatch || (username.length < 1 && true)}
-          onClick={handleRegistrationClick}
-        >
-          Register User
-        </button>
-        <button
-          onClick={() => {
-            window.location.href = '/';
-          }}
-        >
-          Already have an account?
-        </button>
-      </div>
-    </>
+    <div className="newUserContainer">
+      <input
+        autoFocus
+        placeholder="Set Username"
+        type="text"
+        name="username"
+        onChange={(event) => {
+          setUsername(event.target.value.split(' ').join(''));
+          setCreationError('');
+        }}
+        value={username}
+      />
+      <input
+        placeholder="Set Password"
+        type="password"
+        name="password1"
+        onChange={(event) => {
+          setPassword(event.target.value);
+          setCreationError('');
+        }}
+      />
+      <input
+        placeholder="Repeat Password"
+        type="password"
+        name="ValidatorPassword"
+        onChange={(event) => setValidatorPassword(event.target.value)}
+      />
+      {!passwordMatch && <p>Passwords do not match</p>}
+      {creationError && <p className="creationError">{creationError}</p>}
+      <button
+        disabled={!passwordMatch || (username.length < 1 && true)}
+        onClick={handleRegistrationClick}
+      >
+        Register User
+      </button>
+      <button
+        onClick={() => {
+          window.location.href = '/';
+        }}
+      >
+        Already have an account?
+      </button>
+    </div>
   );
 };
 

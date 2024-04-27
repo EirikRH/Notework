@@ -25,7 +25,6 @@ const SaveNoteButton: FunctionComponent<SaveNoteButtonProps> = ({ alteredNote })
     if (!isCurrentNoteNew) {
       return await handleNoteUpdate(note);
     }
-
     handleSaveNewNote(note);
   };
 
