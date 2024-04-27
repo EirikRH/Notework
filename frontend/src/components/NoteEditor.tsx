@@ -66,6 +66,7 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
     if (selectedNote) {
       setCurrentTitle(selectedNote.title);
       setCurrentContent(selectedNote.content);
+      setCurrentTags(selectedNote.tags);
       setIsCurrentNoteSaved(true);
     }
   }, [selectedNote]);

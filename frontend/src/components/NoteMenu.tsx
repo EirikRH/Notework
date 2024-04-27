@@ -41,7 +41,7 @@ const NoteMenu: FunctionComponent<NoteListProps> = () => {
       return notesToFilter;
     }
 
-    const fullyFilteredNotes = notesToFilter.filter((note: Note, i) => {
+    const fullyFilteredNotes = notesToFilter.filter((note: Note) => {
       if (
         note.content.toLowerCase().includes(searchWords.toLowerCase()) ||
         note.title.toLowerCase().includes(searchWords.toLowerCase())
