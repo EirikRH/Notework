@@ -21,7 +21,6 @@ export interface Note {
 }
 
 function App() {
-  
   const {
     displayNoteMenu,
     creatingUser,
@@ -42,7 +41,7 @@ function App() {
   }, [loggedIn]);
 
   useEffect(() => {
-    if(loginToken){
+    if (loginToken) {
       setLoggedIn(true);
     }
   }, [loginToken]);
@@ -77,10 +76,11 @@ function App() {
   return (
     <>
       <Navbar />
+
       <main>
+        {saveMessage && <p className="saveMessage">{saveMessage}</p>}
         {landingPage}
       </main>
-      {saveMessage && <p className="saveMessage">{saveMessage}</p>}
     </>
   );
 }
