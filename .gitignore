@@ -3,3 +3,4 @@
 **/*.env
 **/prisma/migrations
 **docker-compose.yaml
+**user.sql
