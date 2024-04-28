@@ -16,6 +16,8 @@ dist-ssr
 *.local
 .env
 
+**compose.yaml
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
