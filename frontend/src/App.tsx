@@ -9,6 +9,7 @@ import NoteEditor from './components/NoteEditor';
 import { sendNotesRequest } from './assets/server-requests';
 
 import { getGlobalContext } from './context/AppContext';
+
 import NoteMenu from './components/NoteMenu';
 export interface Note {
   user_ID?: number;

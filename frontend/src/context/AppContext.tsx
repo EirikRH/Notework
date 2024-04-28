@@ -38,7 +38,7 @@ const [isCurrentNoteSaved, setIsCurrentNoteSaved] = useState<boolean>(true);
 const [saveMessage, setSaveMessage] = useState<string>('');
 const [displayNoteMenu, setDisplayNoteMenu] = useState(false);
 
-const resetGlobalContext = () => {
+export const resetGlobalContext = () => {
   setLoggedIn(false);
   setDisplayNoteMenu(false);
   setActiveUser('');
@@ -50,7 +50,7 @@ const resetGlobalContext = () => {
   setSaveMessage('');
 };
 
-const setContextAtLogin = (username: string) => {
+export const setContextAtLogin = (username: string) => {
   setLoggedIn(true);
   setSelectedNote(undefined);
   setActiveUser(username);
