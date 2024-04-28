@@ -1,0 +1,7 @@
+**.ts
+**tsconfig.json
+**.yml
+**.env
+**.gitignore
+**README.md
+**prisma/migrations

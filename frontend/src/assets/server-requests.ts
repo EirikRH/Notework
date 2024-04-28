@@ -1,6 +1,6 @@
 import { Note } from '../App';
 
-const API_URL = '/api';
+const API_URL = 'http://localhost:3001';
 
 export interface Credentials {
   username: string;
