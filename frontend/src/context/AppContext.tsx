@@ -23,31 +23,54 @@ export interface GlobalContextProps {
   setSaveMessage: React.Dispatch<React.SetStateAction<string>>;
   displayNoteMenu: boolean;
   setDisplayNoteMenu: React.Dispatch<React.SetStateAction<boolean>>;
-  resetGlobalContext: () => void;
-  setContextAtLogin: (username: string) => void;
+  resetGlobalContext?: () => void;
+  setContextAtLogin?: (username: string) => void;
 }
 
-const GlobalContext = createContext<GlobalContextProps>({});
+const [creatingUser, setCreatingUser] = useState<boolean>(false);
+const [loggedIn, setLoggedIn] = useState<boolean>(false);
+const [activeUser, setActiveUser] = useState<string>('');
+const [loadedNotes, setLoadedNotes] = useState<Note[]>([]);
+const [selectedNote, setSelectedNote] = useState<Note | undefined>(undefined);
+const [isUserEditing, setIsUserEditing] = useState<boolean>(false);
+const [isCurrentNoteNew, setIsCurrentNoteNew] = useState<boolean>(false);
+const [isCurrentNoteSaved, setIsCurrentNoteSaved] = useState<boolean>(true);
+const [saveMessage, setSaveMessage] = useState<string>('');
+const [displayNoteMenu, setDisplayNoteMenu] = useState(false);
+
+const GlobalContext = createContext<GlobalContextProps>({
+  creatingUser,
+  setCreatingUser,
+  loggedIn,
+  setLoggedIn,
+  activeUser,
+  setActiveUser,
+  loadedNotes,
+  setLoadedNotes,
+  selectedNote,
+  setSelectedNote,
+  isUserEditing,
+  setIsUserEditing,
+  isCurrentNoteNew,
+  setIsCurrentNoteNew,
+  isCurrentNoteSaved,
+  setIsCurrentNoteSaved,
+  saveMessage,
+  setSaveMessage,
+  displayNoteMenu,
+  setDisplayNoteMenu,
+});
 
 export const getGlobalContext = (): GlobalContextProps => {
   return useContext(GlobalContext);
 };
+
 
 export function GlobalContextProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [creatingUser, setCreatingUser] = useState<boolean>(false);
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [activeUser, setActiveUser] = useState<string>('');
-  const [loadedNotes, setLoadedNotes] = useState<Note[]>([]);
-  const [selectedNote, setSelectedNote] = useState<Note | undefined>(undefined);
-  const [isUserEditing, setIsUserEditing] = useState<boolean>(false);
-  const [isCurrentNoteNew, setIsCurrentNoteNew] = useState<boolean>(false);
-  const [isCurrentNoteSaved, setIsCurrentNoteSaved] = useState<boolean>(true);
-  const [saveMessage, setSaveMessage] = useState<string>('');
-  const [displayNoteMenu, setDisplayNoteMenu] = useState(false);
 
   const resetGlobalContext = () => {
     setLoggedIn(false);
