@@ -23,8 +23,8 @@ export interface GlobalContextProps {
   setSaveMessage: React.Dispatch<React.SetStateAction<string>>;
   displayNoteMenu: boolean;
   setDisplayNoteMenu: React.Dispatch<React.SetStateAction<boolean>>;
-  resetGlobalContext?: () => void;
-  setContextAtLogin?: (username: string) => void;
+  resetGlobalContext: () => void;
+  setContextAtLogin: (username: string) => void;
 }
 
 const [creatingUser, setCreatingUser] = useState<boolean>(false);
@@ -37,6 +37,25 @@ const [isCurrentNoteNew, setIsCurrentNoteNew] = useState<boolean>(false);
 const [isCurrentNoteSaved, setIsCurrentNoteSaved] = useState<boolean>(true);
 const [saveMessage, setSaveMessage] = useState<string>('');
 const [displayNoteMenu, setDisplayNoteMenu] = useState(false);
+
+const resetGlobalContext = () => {
+  setLoggedIn(false);
+  setDisplayNoteMenu(false);
+  setActiveUser('');
+  setLoadedNotes([]);
+  setSelectedNote(undefined);
+  setIsUserEditing(false);
+  setIsCurrentNoteNew(false);
+  setIsCurrentNoteSaved(true);
+  setSaveMessage('');
+};
+
+const setContextAtLogin = (username: string) => {
+  setLoggedIn(true);
+  setSelectedNote(undefined);
+  setActiveUser(username);
+  setDisplayNoteMenu(true);
+};
 
 const GlobalContext = createContext<GlobalContextProps>({
   creatingUser,
@@ -59,38 +78,19 @@ const GlobalContext = createContext<GlobalContextProps>({
   setSaveMessage,
   displayNoteMenu,
   setDisplayNoteMenu,
+  resetGlobalContext,
+  setContextAtLogin,
 });
 
 export const getGlobalContext = (): GlobalContextProps => {
   return useContext(GlobalContext);
 };
 
-
 export function GlobalContextProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
-  const resetGlobalContext = () => {
-    setLoggedIn(false);
-    setDisplayNoteMenu(false);
-    setActiveUser('');
-    setLoadedNotes([]);
-    setSelectedNote(undefined);
-    setIsUserEditing(false);
-    setIsCurrentNoteNew(false);
-    setIsCurrentNoteSaved(true);
-    setSaveMessage('');
-  };
-
-  const setContextAtLogin = (username: string) => {
-    setLoggedIn(true);
-    setSelectedNote(undefined);
-    setActiveUser(username);
-    setDisplayNoteMenu(true);
-  };
-
   return (
     <GlobalContext.Provider
       value={{
