@@ -18,7 +18,9 @@ const NoteMenu: FunctionComponent<NoteListProps> = () => {
   });
 
   const filterNotes = (search: string, notes: Note[]) => {
+
     let notesToFilter = notes;
+    
     const searchArr = search.split(' ');
     const searchTags = searchArr.filter((word) => word.startsWith('@'));
     const searchWords = searchArr

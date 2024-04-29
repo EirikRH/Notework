@@ -22,8 +22,8 @@ export interface ExistingNote {
   note_ID: number;
   user_ID: number;
   title: string | null;
-  content?: string | null;
-  tags?: string | null;
+  content: string | null;
+  tags: string | null;
 }
 
 export class DatabaseNoteHandler implements NoteHandler {
