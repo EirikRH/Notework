@@ -39,7 +39,7 @@ If you want to spin up a  dev version of this app this is how you can do it:
   5: Add database URL (as: DATABASE_URL="postgresql://{your DBuser}:{your DBpassword}@{ex: localhost:5432}/notework?schema=public") to the .env file
   6: Run "npx prisma generate" to create the prisma client.
   7: Run "npx prisma migrate dev --name init_0" to create a working Notework database (applies prisma.schema from ./prisma).
-  8: Compile the .ts files with tsc. (Run "tsc server.ts"). This creates .js files that can be used by Node.js
+  8: Compile the .ts files with tsc. (Run "tsc server.ts" or the script "npm run tsc"). This creates .js files that can be used by Node.js
   9: Run "node server.js" to start the server on port 3001(Port can be specified in server.ts before compiling wiht tsc).
 
 --//Frontend (Run commands from: **Notework/frontend)
