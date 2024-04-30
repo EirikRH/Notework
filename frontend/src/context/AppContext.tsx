@@ -25,6 +25,7 @@ export interface GlobalContextProps {
   setDisplayNoteMenu: React.Dispatch<React.SetStateAction<boolean>>;
   resetGlobalContext: () => void;
   setContextAtLogin: (username: string) => void;
+  discardChanges: () => void;
 }
 
 //@ts-ignore
@@ -68,6 +69,15 @@ export function GlobalContextProvider({
     setActiveUser(username);
     setDisplayNoteMenu(true);
   };
+
+  const discardChanges = () => {
+    setSelectedNote(undefined);
+    setIsUserEditing(false);
+    setIsCurrentNoteNew(false);
+    setIsCurrentNoteSaved(true);
+    setSaveMessage('Discarded');
+  }
+
   return (
     <GlobalContext.Provider
       value={{
@@ -93,6 +103,7 @@ export function GlobalContextProvider({
         setDisplayNoteMenu,
         resetGlobalContext,
         setContextAtLogin,
+        discardChanges,
       }}
     >
       {children}

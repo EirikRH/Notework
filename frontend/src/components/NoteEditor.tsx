@@ -3,6 +3,7 @@ import { getGlobalContext } from '../context/AppContext';
 import NewNoteButton from './buttons/NewNoteButton';
 import SaveNoteButton from './buttons/SaveNoteButton';
 import CloseNoteButton from './buttons/CloseNoteButton';
+import DiscardButton from './buttons/DiscardButton';
 
 interface NoteEditorProps {}
 
@@ -10,6 +11,7 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
   const {
     isUserEditing,
     selectedNote,
+    isCurrentNoteSaved,
     setIsCurrentNoteSaved,
     setDisplayNoteMenu,
   } = getGlobalContext();
@@ -91,6 +93,7 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
     }
   }, [currentNote]);
 
+  const closeDiscardSwitch = isCurrentNoteSaved ? <CloseNoteButton /> : <DiscardButton/>;
   return (
     <div className="editNote">
       <input
@@ -118,7 +121,7 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
         {isUserEditing ? (
           <>
             <SaveNoteButton alteredNote={currentNote} />
-            <CloseNoteButton />
+            {closeDiscardSwitch}
           </>
         ) : (
           <NewNoteButton />
