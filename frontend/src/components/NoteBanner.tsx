@@ -77,6 +77,7 @@ const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note }) => {
     >
       <div className="previewHolder">
         <p className="titlePreview">{note.title}</p>
+        <p className='tagsPreview'>{note.tags}</p>
         <p className="contentPreview">{note.content}</p>
       </div>
       <button
