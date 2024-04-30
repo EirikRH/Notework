@@ -5,6 +5,7 @@ import { Note } from '../App';
 import LogOutButton from './buttons/LogOutButton';
 
 import NoteBanner from './NoteBanner';
+import { filterNotes } from '../assets/NoteFilter';
 
 interface NoteListProps {}
 
@@ -17,47 +18,10 @@ const NoteMenu: FunctionComponent<NoteListProps> = () => {
     return <NoteBanner note={note} key={note.index} />;
   });
 
-  const filterNotes = (search: string, notes: Note[]) => {
-
-    let notesToFilter = notes;
-    
-    const searchArr = search.split(' ');
-    const searchTags = searchArr.filter((word) => word.startsWith('@'));
-    const searchWords = searchArr
-      .filter((word) => !word.startsWith('@'))
-      .join(' ');
-
-    if (searchTags.length > 0) {
-      notesToFilter = loadedNotes.filter((note: Note) => {
-        for (let i = 0; i < searchTags.length; i++) {
-          const searchTag = searchTags[i];
-          if (!note.tags!.toLowerCase().includes(searchTag.toLowerCase())) {
-            return false;
-          }
-        }
-        return true;
-      });
-    }
-
-    if (!searchWords) {
-      return notesToFilter;
-    }
-
-    const fullyFilteredNotes = notesToFilter.filter((note: Note) => {
-      if (
-        note.content.toLowerCase().includes(searchWords.toLowerCase()) ||
-        note.title.toLowerCase().includes(searchWords.toLowerCase())
-      ) {
-        return true;
-      }
-      return false;
-    });
-
-    return fullyFilteredNotes;
-  };
   const handleSearchChange = (event: any) => {
     setSearchString(event.target.value);
   };
+  
   useEffect(() => {
     if (!searchString) {
       return setDisplayedNotes(loadedNotes);
