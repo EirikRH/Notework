@@ -16,7 +16,6 @@ export interface Note {
   note_ID?: number;
   title: string;
   content: string;
-  index?: number;
   tags?: string;
 }
 
@@ -48,11 +47,7 @@ function App() {
 
   async function getUserNotes(loginToken: string): Promise<void> {
     const storedNotes = await sendNotesRequest(loginToken);
-
-    const indexedNotes = storedNotes.map((note: Note, index: number) => {
-      return { index, ...note };
-    });
-    setLoadedNotes(indexedNotes);
+    setLoadedNotes(storedNotes);
   }
 
   useEffect(() => {

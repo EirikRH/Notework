@@ -9,7 +9,6 @@ const NewNoteButton: FunctionComponent<NewNoteButtonProps> = () => {
     setIsCurrentNoteNew,
     setIsUserEditing,
     setSelectedNote,
-    loadedNotes,
   } = getGlobalContext();
 
   const handleNewNoteClick = () => {
@@ -18,7 +17,6 @@ const NewNoteButton: FunctionComponent<NewNoteButtonProps> = () => {
     setDisplayNoteMenu(false);
     
     setSelectedNote({
-      index: loadedNotes.length,
       title: '',
       content: '',
       tags: '',

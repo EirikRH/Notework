@@ -15,7 +15,7 @@ const NoteMenu: FunctionComponent<NoteListProps> = () => {
   const [displayedNotes, setDisplayedNotes] = useState<Note[]>(loadedNotes);
 
   const noteBanners = displayedNotes.map((note: Note) => {
-    return <NoteBanner note={note} key={note.index} />;
+    return <NoteBanner note={note} key={note.note_ID} />;
   });
 
   const handleSearchChange = (event: any) => {

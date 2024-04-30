@@ -40,10 +40,12 @@ const SaveNoteButton: FunctionComponent<SaveNoteButtonProps> = ({ alteredNote })
     if (updateRequestStatus !== 200) {
       return setSaveMessage('Failed to save update');
     }
+
+    const indexOfUpdatedNote: number = loadedNotes.findIndex(note => note.note_ID === updatedNote.note_ID)
     const updatedLoadedNotes = [...loadedNotes];
-    updatedLoadedNotes[updatedNote.index!].title = updatedNote.title;
-    updatedLoadedNotes[updatedNote.index!].content = updatedNote.content;
-    updatedLoadedNotes[updatedNote.index!].tags = updatedNote.tags;
+    updatedLoadedNotes[indexOfUpdatedNote].title = updatedNote.title;
+    updatedLoadedNotes[indexOfUpdatedNote].content = updatedNote.content;
+    updatedLoadedNotes[indexOfUpdatedNote].tags = updatedNote.tags;
 
     setLoadedNotes(updatedLoadedNotes);
     setIsCurrentNoteSaved(true);
@@ -58,9 +60,9 @@ const SaveNoteButton: FunctionComponent<SaveNoteButtonProps> = ({ alteredNote })
       return setSaveMessage('Failed to save new note');
     }
 
-    const savedNote = await saveNoteResponse.json();
-    savedNote.index = loadedNotes.length;
-    const updatedLoadedNotes = loadedNotes.concat(savedNote);
+    const savedNote: Note = await saveNoteResponse.json();
+    const updatedLoadedNotes: Note[] = [...loadedNotes]
+    updatedLoadedNotes.unshift(savedNote);
 
     setLoadedNotes(updatedLoadedNotes);
     setSelectedNote(savedNote);

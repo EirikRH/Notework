@@ -26,7 +26,7 @@ const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note }) => {
     const loginToken: string = localStorage.getItem('loginToken')!;
     const deleteRequestStatus = await sendNoteDeletionRequest(note, loginToken);
 
-    if (selectedNote?.index === note.index) {
+    if (selectedNote?.note_ID === note.note_ID) {
       setSelectedNote(undefined);
     }
 
@@ -34,7 +34,7 @@ const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note }) => {
       return setSaveMessage('Failed to delete note');
     }
     const updatedLoadedNotes = loadedNotes.filter(
-      (loadedNote) => loadedNote.index !== note.index
+      (loadedNote) => loadedNote.note_ID !== note.note_ID
     );
 
     setLoadedNotes(updatedLoadedNotes);
@@ -51,7 +51,7 @@ const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note }) => {
   }, [certain]);
 
   const handleNoteClick = (note: Note) => {
-    if (isCurrentNoteSaved && selectedNote?.index === note.index) {
+    if (isCurrentNoteSaved && selectedNote?.note_ID === note.note_ID) {
       return handleSavedNoteDeselection();
     }
 
@@ -73,11 +73,11 @@ const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note }) => {
         handleNoteClick(note);
       }}
       className="noteBanner"
-      key={note.index}
+      key={note.note_ID}
     >
       <div className="previewHolder">
         <p className="titlePreview">{note.title}</p>
-        <p className='tagsPreview'>{note.tags}</p>
+        <p className="tagsPreview">{note.tags}</p>
         <p className="contentPreview">{note.content}</p>
       </div>
       <button
