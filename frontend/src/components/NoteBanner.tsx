@@ -15,6 +15,7 @@ const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note }) => {
     selectedNote,
     loadedNotes,
     setIsUserEditing,
+    setIsCurrentNoteNew,
     isUserEditing,
     isCurrentNoteSaved,
   } = getGlobalContext();
@@ -55,6 +56,7 @@ const NoteBanner: FunctionComponent<NoteBannerProps> = ({ note }) => {
     }
 
     setSelectedNote(note);
+    setIsCurrentNoteNew(false);
     if (!isUserEditing) {
       setIsUserEditing(true);
     }
