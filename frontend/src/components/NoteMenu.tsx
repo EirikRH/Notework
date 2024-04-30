@@ -21,10 +21,19 @@ const NoteMenu: FunctionComponent<NoteListProps> = () => {
   const handleSearchChange = (event: any) => {
     setSearchString(event.target.value);
   };
-  
+
   useEffect(() => {
-    if (!searchString) {
-      return setDisplayedNotes(loadedNotes);
+    if (searchString.endsWith(' ')) {
+      return;
+    }
+
+    if (
+      !searchString ||
+      (searchString.length < 2 && searchString.startsWith('@'))
+    ) {
+      const shouldReRender = displayedNotes.length !== loadedNotes.length;
+      shouldReRender && setDisplayedNotes(loadedNotes);
+      return;
     }
 
     const filteredNotes = filterNotes(searchString, loadedNotes);
