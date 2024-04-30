@@ -46,7 +46,7 @@ const NoteMenu: FunctionComponent<NoteListProps> = () => {
         autoFocus
         className="searchBar"
         type="text"
-        placeholder="Example filter: @yourtag @memo words to search for"
+        placeholder="@tags @first then words to search for"
         onChange={(event) => handleSearchChange(event)}
       />
       <ul className="noteList">{noteBanners}</ul>
