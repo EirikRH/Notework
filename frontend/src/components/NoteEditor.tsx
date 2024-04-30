@@ -15,7 +15,7 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
   } = getGlobalContext();
 
   if (!selectedNote) {
-    return <NewNoteButton />;
+    return <NewNoteButton/>;
   }
   const [currentTitle, setCurrentTitle] = useState(selectedNote.title);
   const [currentTags, setCurrentTags] = useState(selectedNote.tags);
@@ -77,6 +77,19 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
     content: currentContent,
     tags: currentTags,
   };
+
+  useEffect(() => {
+    const isCurrentNoteEmpty =
+      currentTags === '' && currentTitle === '' && currentContent === '';
+    const isCurrentNoteUnchanged =
+      currentTags === selectedNote.tags &&
+      currentTitle === selectedNote.title &&
+      currentContent === selectedNote.content;
+
+    if (isCurrentNoteEmpty || isCurrentNoteUnchanged) {
+      return setIsCurrentNoteSaved(true);
+    }
+  }, [currentNote]);
 
   return (
     <div className="editNote">
