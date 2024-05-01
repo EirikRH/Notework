@@ -10,6 +10,6 @@ COPY . .
 
 RUN npx prisma generate
 
-EXPOSE 3001
+EXPOSE 80
 
-CMD ["npm", "run", "container-start"]
+CMD ["node", "server.js"]

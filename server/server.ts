@@ -3,10 +3,15 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const port = 3001;
+const port = 80;
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  })
+);
 app.use(express.json());
 
 import {

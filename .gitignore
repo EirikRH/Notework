@@ -2,4 +2,4 @@
 **/*.js
 **/*.env
 **/prisma/migrations
-**docker-compose.yaml
+**compose.yml

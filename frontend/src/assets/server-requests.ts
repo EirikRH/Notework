@@ -1,6 +1,6 @@
 import { Note } from '../App';
 
-const API_URL = 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export interface Credentials {
   username: string;
@@ -26,6 +26,7 @@ export async function sendLoginRequest({
 }: Credentials): Promise<LoginResponse> {
   try {
     const response = await fetch(`${API_URL}/login`, {
+      mode: 'cors',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
