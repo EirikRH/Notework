@@ -50,7 +50,7 @@ nav .logo {
   display: block;
   font-size: calc(1vh + 1vw + 16px);
   letter-spacing: 10px;
-  margin: 5px;
+  margin: auto 0;
   padding: 5px;
   font-weight: lighter;
   background-color: #1f1f1f;
@@ -72,7 +72,7 @@ nav .menuButton {
   background-color: #1a1a1a;
   padding: 10px 15px;
   width: 100%;
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 .editNote .editTagsArea {
   background-color: #1a1a1a;
@@ -135,7 +135,6 @@ nav .menuButton {
   border-radius: 0;
   font-size: 1.7rem;
   width: 100%;
-  height: 10vh;
   height: 60px;
   background-color: #373737;
 }
@@ -158,25 +157,25 @@ nav .menuButton {
   display: flex;
   flex-direction: column;
 }
-.menu .noteList .noteBanner .previewHolder:hover .titlePreview,
 .menu .noteList .noteBanner .previewHolder:hover .contentPreview {
-  font-weight: normal;
+  max-height: 4rem;
 }
 .menu .noteList .noteBanner .previewHolder .tagsPreview {
   font-size: 1rem;
   color: rgba(192, 125, 48, 0.368627451);
+  max-height: 1.4rem;
 }
 .menu .noteList .noteBanner .previewHolder .titlePreview {
   font-size: 2rem;
   max-height: 3rem;
-  min-height: 3rem;
   line-height: 3rem;
 }
 .menu .noteList .noteBanner .previewHolder .contentPreview {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   max-height: 2rem;
   min-height: 2rem;
   line-height: 2rem;
+  color: rgba(192, 125, 48, 0.6901960784);
 }
 .menu .noteList .noteBanner .previewHolder .tagsPreview,
 .menu .noteList .noteBanner .previewHolder .titlePreview,
@@ -190,6 +189,7 @@ nav .menuButton {
   letter-spacing: 1px;
   background-color: transparent;
   color: #c07d30;
+  text-wrap: nowrap;
 }
 .menu .noteList .deleteButton:hover {
   background-color: #c07d30;
@@ -270,27 +270,105 @@ nav .menuButton {
   scale: 1.08;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1450px) {
   .menu {
     width: 100%;
   }
+}
+@media screen and (max-width: 1000px) {
+  .menu {
+    padding-bottom: 50px;
+  }
   .menu .searchBar {
+    max-height: 55px;
     font-size: 1.1rem;
   }
-  .menu .noteBanner .previewHolder .titlePreview {
+  .menu .logOutButton {
+    height: 50px;
+  }
+  .menu .noteList .noteBanner .previewHolder:hover .contentPreview {
+    max-height: 3rem;
+  }
+  .menu .noteList .noteBanner .previewHolder .titlePreview {
     font-size: 1.3rem;
     max-height: 2rem;
     min-height: 2rem;
     line-height: 2rem;
   }
-  .menu .noteBanner .previewHolder .contentPreview {
+  .menu .noteList .noteBanner .previewHolder .contentPreview {
     font-size: 1rem;
     max-height: 1.5rem;
     min-height: 1.5rem;
     line-height: 1.5rem;
   }
-  .menu .noteBanner .deleteButton {
+  .menu .noteList .deleteButton {
+    font-size: 1.2rem;
+    letter-spacing: -0.2px;
+  }
+  .editNote .editButtonHolder button {
+    height: 50px;
+  }
+  #NewNoteButton {
+    height: 50px;
+    line-height: 3.5rem;
+  }
+  .loginContainer button,
+  .newUserContainer button {
+    font-size: 1.5rem;
+  }
+  .loginContainer .loginInput,
+  .newUserContainer .loginInput {
+    font-size: 1.6rem;
+  }
+}
+@media screen and (max-width: 600px) {
+  nav .logo {
+    font-size: 2rem;
+    letter-spacing: 3px;
+  }
+  nav .menuButton {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    font-weight: normal;
+  }
+  .editNote .editTitleArea {
+    font-size: 1.7rem;
+  }
+  .editNote .editTagsArea {
+    font-size: 1rem;
+  }
+  .editNote .editTextArea {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  .editNote .editButtonHolder button {
+    font-size: 1.5rem;
+  }
+  .menu .searchBar {
+    height: 30px;
+    font-size: 1rem;
+  }
+  .menu .noteList .noteBanner .previewHolder .titlePreview {
     font-size: 1.1rem;
+    max-height: 1.8rem;
+    min-height: 1.8rem;
+    line-height: 1.5rem;
+  }
+  .menu .noteList .noteBanner .previewHolder .contentPreview {
+    font-size: 1rem;
+    max-height: 1.5rem;
+    min-height: 1.5rem;
+    line-height: 1.5rem;
+  }
+  .menu .noteList .noteBanner .previewHolder .tagsPreview {
+    font-size: 1rem;
+    max-height: 1rem;
+    min-height: 1rem;
+    font-size: 0.8rem;
+    line-height: 1rem;
+  }
+  .menu .noteList .deleteButton {
+    font-size: 1rem;
   }
   .loginContainer button,
   .newUserContainer button {

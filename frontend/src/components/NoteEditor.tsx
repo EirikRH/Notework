@@ -17,7 +17,7 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
   } = getGlobalContext();
 
   if (!selectedNote) {
-    return <NewNoteButton/>;
+    return <NewNoteButton />;
   }
   const [currentTitle, setCurrentTitle] = useState(selectedNote.title);
   const [currentTags, setCurrentTags] = useState(selectedNote.tags);
@@ -93,13 +93,16 @@ const NoteEditor: FunctionComponent<NoteEditorProps> = () => {
     }
   }, [currentNote]);
 
-  const closeDiscardSwitch = isCurrentNoteSaved ? <CloseNoteButton /> : <DiscardButton/>;
+  const closeDiscardSwitch = isCurrentNoteSaved ? (
+    <CloseNoteButton />
+  ) : (
+    <DiscardButton />
+  );
   return (
     <div className="editNote">
       <input
-        autoFocus
         className="editTagsArea"
-        placeholder="@tag @your @idea"
+        placeholder="@tag @your @note"
         type="text"
         onChange={(event) => handleTagsChange(event)}
         value={currentTags}

@@ -5,7 +5,6 @@ interface NewNoteButtonProps {}
 
 const NewNoteButton: FunctionComponent<NewNoteButtonProps> = () => {
   const {
-    setDisplayNoteMenu,
     setIsCurrentNoteNew,
     setIsUserEditing,
     setSelectedNote,
@@ -14,7 +13,6 @@ const NewNoteButton: FunctionComponent<NewNoteButtonProps> = () => {
   const handleNewNoteClick = () => {
     setIsCurrentNoteNew(true);
     setIsUserEditing(true);
-    setDisplayNoteMenu(false);
     
     setSelectedNote({
       title: '',

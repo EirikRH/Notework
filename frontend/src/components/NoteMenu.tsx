@@ -43,7 +43,6 @@ const NoteMenu: FunctionComponent<NoteListProps> = () => {
   return (
     <ul className="menu">
       <input
-        autoFocus
         className="searchBar"
         type="text"
         placeholder="@tags @first then words to search for"
