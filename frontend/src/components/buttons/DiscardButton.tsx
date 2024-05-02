@@ -13,7 +13,7 @@ const DiscardButton: FunctionComponent<DiscardButtonProps> = () => {
         setDisplayNoteMenu(true);
       }}
     >
-      Discard {!isCurrentNoteNew && 'Changes'}
+      Discard {!isCurrentNoteNew && 'Edit'}
     </button>
   );
 };

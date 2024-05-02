@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Login from './components/Login';
 import Navbar from './components/Navbar';
@@ -29,7 +29,7 @@ function App() {
     saveMessage,
     setSaveMessage,
   } = getGlobalContext();
-
+  const [saveMessageTimeout, setSaveMessageTimeout] = useState<NodeJS.Timeout | null>(null);
   const loginToken: string = localStorage.getItem('loginToken')!;
 
   useEffect(() => {
@@ -51,9 +51,18 @@ function App() {
   }
 
   useEffect(() => {
-    setTimeout(() => {
+    if (!saveMessage) {
+      return;
+    }
+
+    clearTimeout(saveMessageTimeout!);
+    setSaveMessageTimeout(null);
+
+    const newTimeout = setTimeout(() => {
       setSaveMessage('');
-    }, 1000);
+    }, 1500);
+    setSaveMessageTimeout(newTimeout);
+    
   }, [saveMessage]);
 
   const landingPage = !loggedIn ? (

@@ -99,6 +99,7 @@ nav .menuButton {
   box-shadow: 0px -5px 5px 0px rgba(31, 31, 31, 0.5);
 }
 .editNote .editButtonHolder button {
+  text-wrap: nowrap;
   font-size: 2rem;
   border-radius: 0;
   width: 50%;
@@ -220,7 +221,8 @@ nav .menuButton {
   padding: 15px;
   font-size: 1.5rem;
   border-radius: 3px;
-  background-color: #1f1f1f;
+  background-color: #c07d30;
+  color: #1f1f1f;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -329,7 +331,6 @@ nav .menuButton {
   nav .menuButton {
     font-size: 1.5rem;
     letter-spacing: 2px;
-    font-weight: normal;
   }
   .editNote .editTitleArea {
     font-size: 1.7rem;
