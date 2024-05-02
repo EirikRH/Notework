@@ -4,6 +4,9 @@ Complete MVP
 
 ------- Description -------
 
+Test the application here:
+https://notework.azurewebsites.net/
+
 
 This is an app for creating notes, categorizing them, and saving them for later.
 
